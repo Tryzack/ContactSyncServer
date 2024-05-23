@@ -39,7 +39,8 @@ if (sessionOptions.cookie.secure) {
 }
 
 app.get("/", (req, res) => {
-	res.status(200).send({ message: "Hello world" });
+	// test server
+	res.status(200).send({ message: "Hello world from ContactSyncBackend" });
 });
 
 app.listen(port, () => {

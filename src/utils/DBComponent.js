@@ -290,6 +290,76 @@ async function updateContact(userId, contactId, firstName = "", lastName = "", c
 	}
 }
 
+/**
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} phoneType
+ * @param {number} phoneCode
+ * @param {number} phoneNumber
+ */
+async function updateContactPhone(userId, contactId, phoneType, phoneCode, phoneNumber) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateContactPhone, [phoneType, phoneCode, phoneNumber, contactId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} emailType
+ * @param {string} emailDirection
+ */
+async function updateContactEmail(userId, contactId, emailType, emailDirection) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateContactEmail, [emailType, emailDirection, contactId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {string} url
+ */
+async function updateContactURL(userId, contactId, url) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateContactURL, [url, contactId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+async function updateContactDate(userId, contactId, dateType, contactDate) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateContactDate, [dateType, contactDate, contactId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
 getUsers().then((users) => {
 	users.forEach((user) => {
 		USERS.push([user.id, user.email]);
@@ -306,6 +376,10 @@ export {
 	insertContactEmail,
 	insertContactURL,
 	updateContact,
+	updateContactPhone,
+	updateContactEmail,
+	updateContactURL,
+	updateContactDate,
 	getUsers,
 	getUserByEmail,
 };
