@@ -1,8 +1,11 @@
-import { insertContactDate } from "../utils/DBComponent";
+import { insertContactDate } from "../utils/DBComponent.js";
 
-export default async function createContactDate(req, res) {
-	const { userId, contactId, date } = req.body;
-	if (!userId || !contactId || !date) {
+export async function createContactDate(req, res) {
+	if (!req.session.userId) {
+		return res.status(401).send({ message: "Unauthorized" });
+	}
+	const { contactId, dateType, date } = req.body;
+	if (!contactId || !date) {
 		return res.status(400).send({ message: "Missing data" });
 	}
 	// date format: yyyy-mm-dd
@@ -10,7 +13,7 @@ export default async function createContactDate(req, res) {
 	if (!regex.test(date)) {
 		return res.status(400).send({ message: "Invalid date format" });
 	}
-	const result = await insertContactDate(userId, contactId, date);
+	const result = await insertContactDate(req.session.userId, contactId, dateType, date);
 	if (!result) {
 		return res.status(500).send({ message: "Error creating date" });
 	}

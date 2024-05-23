@@ -1,4 +1,4 @@
-import { insertGroup } from "../utils/DBComponent";
+import { insertGroup } from "../utils/DBComponent.js";
 
 export async function createGroup(req, res) {
 	if (!req.session.userId) {

@@ -1,4 +1,4 @@
-import { insertContactGroup } from "../utils/DBComponent";
+import { insertContactGroup } from "../utils/DBComponent.js";
 
 export async function createContactGroup(req, res) {
 	if (!req.session.userId) {

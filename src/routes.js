@@ -12,7 +12,7 @@ import { createEmail } from "./controllers/createEmail.js";
 import { createURL } from "./controllers/createURL.js";
 import { createContactDate } from "./controllers/createContactDate.js";
 import { updateContact } from "./controllers/updateContact.js";
-import { updateContactPhone } from "./controllers/updateContactPhone.js";
+import { updateContactPhone } from "./controllers/updatePhone.js";
 import { updateContactEmail } from "./controllers/updateContactEmail.js";
 import { updateContactURL } from "./controllers/updateContactURL.js";
 import { updateContactDate } from "./controllers/updateContactDate.js";

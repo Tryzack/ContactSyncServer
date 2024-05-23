@@ -1,16 +1,17 @@
-import { updateContactPhone } from "../utils/DBComponent";
+import { updateContactPhone as updateContactPhoneDB } from "../utils/DBComponent.js";
 
 export async function updateContactPhone(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });
 		return;
 	}
-	if (!req.body.contactId || !req.body.phoneNumber) {
+	if (!req.body.contactId || !req.body.phoneNumber || !req.body.id) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
 
-	const result = await updateContactPhone(
+	const result = await updateContactPhoneDB(
+		req.body.id,
 		req.session.userId,
 		req.body.contactId,
 		req.body.phoneType || 1,

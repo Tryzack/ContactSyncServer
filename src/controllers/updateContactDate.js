@@ -1,11 +1,11 @@
-import { updateContactDate } from "../utils/DBComponent";
+import { updateContactDate as updateContactDateDB } from "../utils/DBComponent.js";
 
-export async function updateContactDateController(req, res) {
+export async function updateContactDate(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });
 		return;
 	}
-	if (!req.body.contactId || !req.body.date) {
+	if (!req.body.contactId || !req.body.date || !req.body.id) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
@@ -14,7 +14,7 @@ export async function updateContactDateController(req, res) {
 		res.status(400).send({ message: "Invalid date format" });
 		return;
 	}
-	const result = await updateContactDate(req.session.userId, req.body.contactId, req.body.date);
+	const result = await updateContactDateDB(req.body.id, req.session.userId, req.body.contactId, req.body.dateType || 1, req.body.date);
 	if (result) {
 		res.send({ message: "Date updated" });
 	} else {

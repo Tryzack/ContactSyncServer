@@ -158,6 +158,7 @@ async function insertContact(userId, firstName, lastName, contactAlias, company,
 
 /**
  * Insert a new phone number for a contact
+ * @param {number} id - Phone id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {number} phoneType - Phone type
@@ -169,7 +170,8 @@ async function insertContactPhone(userId, contactId, phoneType, phoneCode, phone
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.insert.insertContactPhone, [userId, contactId, phoneType, phoneCode, phoneNumber]);
+		const id = await client.query(queries.select.getMaxContactPhoneId, [contactId, userId]);
+		await client.query(queries.insert.insertContactPhone, [id.rows[0].max + 1 || 1, userId, contactId, phoneType, phoneCode, phoneNumber]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -180,6 +182,7 @@ async function insertContactPhone(userId, contactId, phoneType, phoneCode, phone
 
 /**
  * Insert a new email for a contact
+ * @param {number} id - Email id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {number} emailType - Email type
@@ -195,7 +198,8 @@ async function insertContactEmail(userId, contactId, emailType, emailDirection) 
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.insert.insertContactEmail, [userId, contactId, emailType, emailDirection]);
+		const id = await client.query(queries.select.getMaxContactEmailId, [contactId, userId]);
+		await client.query(queries.insert.insertContactEmail, [id.rows[0].max + 1 || 1, userId, contactId, emailType, emailDirection]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -206,20 +210,18 @@ async function insertContactEmail(userId, contactId, emailType, emailDirection) 
 
 /**
  * Insert a new date for a contact
+ * @param {number} id - Date id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {number} dateType - Date type
  * @param {string} contactDate - Contact date (format: yyyy-mm-dd)
  */
 async function insertContactDate(userId, contactId, dateType, contactDate) {
-	const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-	if (!dateRegex.test(contactDate)) {
-		throw new Error("Invalid date format");
-	}
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.insert.insertContactDate, [userId, contactId, dateType, contactDate]);
+		const id = await client.query(queries.select.getMaxContactDateId, [contactId, userId]);
+		await client.query(queries.insert.insertContactDate, [id.rows[0].max + 1 || 1, userId, contactId, dateType, contactDate]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -230,6 +232,7 @@ async function insertContactDate(userId, contactId, dateType, contactDate) {
 
 /**
  * Insert a new URL for a contact
+ * @param {number} id - URL id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {string} url - URL
@@ -238,7 +241,8 @@ async function insertContactURL(userId, contactId, url) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.insert.insertContactURL, [userId, contactId, url]);
+		const id = await client.query(queries.select.getMaxContactURLId, [contactId, userId]);
+		await client.query(queries.insert.insertContactURL, [id.rows[0].max + 1 || 1, userId, contactId, url]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -291,17 +295,19 @@ async function updateContact(userId, contactId, firstName = "", lastName = "", c
 }
 
 /**
+ * Update contact phone
+ * @param {number} id - Phone id
  * @param {number} userId
  * @param {number} contactId
  * @param {number} phoneType
  * @param {number} phoneCode
  * @param {number} phoneNumber
  */
-async function updateContactPhone(userId, contactId, phoneType, phoneCode, phoneNumber) {
+async function updateContactPhone(id, userId, contactId, phoneType, phoneCode, phoneNumber) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.update.updateContactPhone, [phoneType, phoneCode, phoneNumber, contactId, userId]);
+		await client.query(queries.update.updateContactPhone, [phoneType, phoneCode, phoneNumber, contactId, userId, id]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -311,16 +317,18 @@ async function updateContactPhone(userId, contactId, phoneType, phoneCode, phone
 }
 
 /**
+ * Update contact email
+ * @param {number} id
  * @param {number} userId
  * @param {number} contactId
  * @param {number} emailType
  * @param {string} emailDirection
  */
-async function updateContactEmail(userId, contactId, emailType, emailDirection) {
+async function updateContactEmail(id, userId, contactId, emailType, emailDirection) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.update.updateContactEmail, [emailType, emailDirection, contactId, userId]);
+		await client.query(queries.update.updateContactEmail, [emailType, emailDirection, contactId, userId, id]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -330,15 +338,17 @@ async function updateContactEmail(userId, contactId, emailType, emailDirection) 
 }
 
 /**
+ * Update contact URL
+ * @param {number} id
  * @param {number} userId
  * @param {number} contactId
  * @param {string} url
  */
-async function updateContactURL(userId, contactId, url) {
+async function updateContactURL(id, userId, contactId, url) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.update.updateContactURL, [url, contactId, userId]);
+		await client.query(queries.update.updateContactURL, [url, contactId, userId, id]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -347,11 +357,19 @@ async function updateContactURL(userId, contactId, url) {
 	}
 }
 
-async function updateContactDate(userId, contactId, dateType, contactDate) {
+/**
+ * Update contact date
+ * @param {number} id
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} dateType
+ * @param {string} contactDate
+ */
+async function updateContactDate(id, userId, contactId, dateType, contactDate) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.update.updateContactDate, [dateType, contactDate, contactId, userId]);
+		await client.query(queries.update.updateContactDate, [dateType, contactDate, contactId, userId, id]);
 		client.end();
 		return true;
 	} catch (error) {

@@ -1,4 +1,4 @@
-import { updateContact as DBUpdate } from "../utils/DBComponent";
+import { updateContact as DBUpdate } from "../utils/DBComponent.js";
 
 export async function updateContact(req, res) {
 	if (!req.session.userId) {
