@@ -1,4 +1,4 @@
-import { deleteGroup as deleteGroupDB } from "../utils/DBComponent";
+import { deleteGroup as deleteGroupDB } from "../utils/DBComponent.js";
 
 export async function deleteGroup(req, res) {
 	if (!req.session.userId) {
@@ -7,6 +7,10 @@ export async function deleteGroup(req, res) {
 	}
 	if (!req.body.groupId) {
 		res.status(400).send({ message: "Missing fields" });
+		return;
+	}
+	if (req.body.groupId <= 2) {
+		res.status(400).send({ message: "Favorite and Emergencie groups cannot be deleted" });
 		return;
 	}
 	try {

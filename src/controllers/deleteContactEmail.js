@@ -1,16 +1,16 @@
-import { deleteContactEmail as deleteContactEmailDB } from "../utils/DBComponent";
+import { deleteContactEmail as deleteContactEmailDB } from "../utils/DBComponent.js";
 
 export async function deleteContactEmail(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });
 		return;
 	}
-	if (!req.body.emailId || !req.session.contactId) {
+	if (!req.body.emailId || !req.body.contactId) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
 	try {
-		const result = await deleteContactEmailDB(req.session.userId, req.session.contactId, req.body.emailId);
+		const result = await deleteContactEmailDB(req.session.userId, req.body.contactId, req.body.emailId);
 		if (result === false) {
 			res.status(400).send({ message: "Email not found" });
 			return;

@@ -18,6 +18,7 @@ import { updateContactPhone } from "./controllers/updatePhone.js";
 import { updateContactEmail } from "./controllers/updateContactEmail.js";
 import { updateContactURL } from "./controllers/updateContactURL.js";
 import { updateContactDate } from "./controllers/updateContactDate.js";
+import { updateGroup } from "./controllers/updateGroup.js";
 
 import { deleteContact } from "./controllers/deleteContact.js";
 import { deleteContactPhone } from "./controllers/deleteContactPhone.js";
@@ -49,6 +50,7 @@ router.put("/updateContactPhone", updateContactPhone);
 router.put("/updateContactEmail", updateContactEmail);
 router.put("/updateContactURL", updateContactURL);
 router.put("/updateContactDate", updateContactDate);
+router.put("/updateGroup", updateGroup);
 
 // delete routes
 router.delete("/deleteContact", deleteContact);

@@ -379,6 +379,26 @@ async function updateContactDate(id, userId, contactId, dateType, contactDate) {
 	}
 }
 /**
+ * Update group
+ * @param {number} userId
+ * @param {number} groupId
+ * @param {string} groupName
+ * @param {string} groupDescription
+ */
+async function updateGroup(userId, groupId, groupName, groupDescription) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateGroup, [groupName, groupDescription, userId, groupId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
  * Delete contact and all its related data
  * @param {number} userId
  * @param {number} contactId
@@ -535,6 +555,7 @@ export {
 	updateContactEmail,
 	updateContactURL,
 	updateContactDate,
+	updateGroup,
 	deleteContact,
 	deleteContactEmail,
 	deleteContactURL,

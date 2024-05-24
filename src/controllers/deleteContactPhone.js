@@ -1,4 +1,4 @@
-import { deleteContactPhone as deleteContactPhoneDB } from "../utils/DBComponent";
+import { deleteContactPhone as deleteContactPhoneDB } from "../utils/DBComponent.js";
 
 export async function deleteContactPhone(req, res) {
 	if (!req.session.userId) {
@@ -9,12 +9,14 @@ export async function deleteContactPhone(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
-
-	const result = await deleteContactPhoneDB(req.session.userId, req.body.contactId, req.body.phoneId);
-
-	if (result) {
+	try {
+		const result = await deleteContactPhoneDB(req.session.userId, req.body.contactId, req.body.phoneId);
+		if (!result) {
+			res.status(400).send({ message: "Error deleting phone" });
+			return;
+		}
 		res.send({ message: "Phone deleted" });
-	} else {
-		res.status(400).send({ message: "Error deleting phone" });
+	} catch (error) {
+		res.status(500).send({ message: "Error deleting phone" });
 	}
 }

@@ -1,4 +1,4 @@
-import { deleteContactURL as deleteContactURLDB } from "../utils/DBComponent";
+import { deleteContactURL as deleteContactURLDB } from "../utils/DBComponent.js";
 
 export const deleteContactUrl = async (req, res) => {
 	if (!req.session.userId) {
@@ -11,7 +11,11 @@ export const deleteContactUrl = async (req, res) => {
 	}
 	try {
 		const result = await deleteContactURLDB(req.session.userId, req.body.contactId, req.body.urlId);
-		res.status(200).json(result);
+		if (!result) {
+			res.status(500).send({ message: "Error deleting URL" });
+			return;
+		}
+		res.status(200).json({ message: "URL deleted" });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}

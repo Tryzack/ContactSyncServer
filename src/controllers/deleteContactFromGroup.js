@@ -1,4 +1,4 @@
-import { deleteContactFromGroup as deleteContactFromGroupDB } from "../utils/DBComponent";
+import { deleteContactFromGroup as deleteContactFromGroupDB } from "../utils/DBComponent.js";
 
 export const deleteContactFromGroup = async (req, res) => {
 	if (!req.session.userId) {
@@ -11,7 +11,11 @@ export const deleteContactFromGroup = async (req, res) => {
 	}
 	try {
 		const result = await deleteContactFromGroupDB(req.session.userId, req.body.contactId, req.body.groupId);
-		res.status(200).json(result);
+		if (!result) {
+			res.status(500).send({ message: "Error deleting contact from group" });
+			return;
+		}
+		res.status(200).json({ message: "Contact removed from group" });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}

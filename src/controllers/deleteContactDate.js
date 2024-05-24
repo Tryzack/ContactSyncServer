@@ -1,4 +1,4 @@
-import { deleteContactDate as deleteContactDateDB } from "../utils/DBComponent";
+import { deleteContactDate as deleteContactDateDB } from "../utils/DBComponent.js";
 
 export const deleteContactDate = async (req, res) => {
 	if (!req.session.userId) {
@@ -12,7 +12,11 @@ export const deleteContactDate = async (req, res) => {
 
 	try {
 		const result = await deleteContactDateDB(req.session.userId, req.body.contactId, req.body.dateId);
-		res.status(200).json(result);
+		if (!result) {
+			res.status(500).send({ message: "Error deleting date" });
+			return;
+		}
+		res.status(200).json({ message: "Date removed from contact" });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
