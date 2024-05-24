@@ -45,11 +45,18 @@ const queries = {
 	delete: {
 		deleteContact: "DELETE FROM contact WHERE id = $1 AND user_id = $2",
 		deleteContactPhone: "DELETE FROM contact_phone WHERE contact_id = $1 AND user_id = $2 AND id = $3",
+		deleteContactPhones: "DELETE FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		deleteContactEmail: "DELETE FROM contact_email WHERE contact_id = $1 AND user_id = $2 AND id = $3",
+		deleteContactEmails: "DELETE FROM contact_email WHERE contact_id = $1 AND user_id = $2",
 		deleteContactURL: "DELETE FROM contact_url WHERE contact_id = $1 AND user_id = $2 AND id = $3",
+		deleteContactURLs: "DELETE FROM contact_url WHERE contact_id = $1 AND user_id = $2",
 		deleteContactDate: "DELETE FROM contact_date WHERE contact_id = $1 AND user_id = $2 AND id = $3",
-		deleteGroup: "DELETE FROM group_data WHERE id = $1 AND user_id = $2 AND id = $3",
-		deleteContactGroup: "DELETE FROM contact_group WHERE contact_id = $1 AND user_id = $2",
+		deleteContactDates: "DELETE FROM contact_date WHERE contact_id = $1 AND user_id = $2",
+		deleteGroup: "DELETE FROM group_data WHERE id = $1 AND user_id = $2",
+		/* deleteContactGroup: "DELETE FROM contact_group WHERE contact_id = $1 AND user_id = $2", */
+		deleteAllContactsFromGroup: "DELETE FROM contact_group WHERE group_id = $1 AND user_id = $2",
+		deleteContactFromAllGroups: "DELETE FROM contact_group WHERE group_id = $1 AND user_id = $2",
+		deleteContactFromGroup: "DELETE FROM contact_group WHERE contact_id = $1 AND group_id = $2 AND user_id = $3",
 	},
 };
 

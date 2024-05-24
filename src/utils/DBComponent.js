@@ -25,7 +25,7 @@ async function connect() {
 	}
 }
 
-async function testDatabase() {
+/* async function testDatabase() {
 	try {
 		const client = await connect();
 		if (!client) return false;
@@ -35,6 +35,7 @@ async function testDatabase() {
 		console.error(error);
 	}
 }
+ */
 
 /**
  * Get all users
@@ -49,6 +50,24 @@ async function getUsers() {
 		return result.rows;
 	} catch (error) {
 		console.error(error);
+	}
+}
+
+/**
+ * Get user by email
+ * @param {string} email - User email
+ * @returns
+ */
+async function getUserByEmail(email) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getUserByEmail, [email]);
+		client.end();
+		return result.rows[0];
+	} catch (error) {
+		console.error(error);
+		return null;
 	}
 }
 
@@ -232,7 +251,6 @@ async function insertContactDate(userId, contactId, dateType, contactDate) {
 
 /**
  * Insert a new URL for a contact
- * @param {number} id - URL id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {string} url - URL
@@ -248,23 +266,6 @@ async function insertContactURL(userId, contactId, url) {
 	} catch (error) {
 		console.error(error);
 		return false;
-	}
-}
-/**
- * Get user by email
- * @param {string} email - User email
- * @returns
- */
-async function getUserByEmail(email) {
-	try {
-		const client = await connect();
-		if (!client) return null;
-		const result = await client.query(queries.select.getUserByEmail, [email]);
-		client.end();
-		return result.rows[0];
-	} catch (error) {
-		console.error(error);
-		return null;
 	}
 }
 
@@ -377,6 +378,140 @@ async function updateContactDate(id, userId, contactId, dateType, contactDate) {
 		return false;
 	}
 }
+/**
+ * Delete contact and all its related data
+ * @param {number} userId
+ * @param {number} contactId
+ */
+async function deleteContact(userId, contactId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteContactPhones, [contactId, userId]);
+		await client.query(queries.delete.deleteContactEmails, [contactId, userId]);
+		await client.query(queries.delete.deleteContactURLs, [contactId, userId]);
+		await client.query(queries.delete.deleteContactDates, [contactId, userId]);
+		await client.query(queries.delete.deleteContactFromAllGroups, [userId, contactId]);
+		await client.query(queries.delete.deleteContact, [contactId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+/**
+ * Delete contact phone
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} phoneId
+ */
+async function deleteContactPhone(userId, contactId, phoneId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteContactPhone, [contactId, userId, phoneId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * Delete contact email
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} emailId
+ */
+async function deleteContactEmail(userId, contactId, emailId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteContactEmail, [contactId, userId, emailId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * Delete contact URL
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} urlId
+ */
+async function deleteContactURL(userId, contactId, urlId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteContactURL, [contactId, userId, urlId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * Delete contact date
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} dateId
+ */
+async function deleteContactDate(userId, contactId, dateId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteContactDate, [contactId, userId, dateId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * Delete group and all its contacts
+ * @param {number} userId
+ * @param {number} groupId
+ */
+async function deleteGroup(userId, groupId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteAllContactsFromGroup, [groupId, userId]);
+		await client.query(queries.delete.deleteGroup, [groupId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+/**
+ * Delete contact from group
+ * @param {number} userId
+ * @param {number} contactId
+ * @param {number} groupId
+ */
+async function deleteContactFromGroup(userId, contactId, groupId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteContactFromGroup, [contactId, groupId, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
 
 getUsers().then((users) => {
 	users.forEach((user) => {
@@ -385,6 +520,8 @@ getUsers().then((users) => {
 });
 
 export {
+	getUsers,
+	getUserByEmail,
 	insertUser,
 	insertGroup,
 	insertContactGroup,
@@ -398,6 +535,11 @@ export {
 	updateContactEmail,
 	updateContactURL,
 	updateContactDate,
-	getUsers,
-	getUserByEmail,
+	deleteContact,
+	deleteContactEmail,
+	deleteContactURL,
+	deleteContactPhone,
+	deleteContactDate,
+	deleteGroup,
+	deleteContactFromGroup,
 };
