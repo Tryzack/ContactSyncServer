@@ -25,13 +25,13 @@ export async function register(req, res) {
 		}
 		insertGroup(user_id, "Favorites", "List of favorite contacts");
 		insertGroup(user_id, "Emergency", "List of emergency contacts");
-		insertContact(user_id, req.body.firstName, req.body.lastName, req.body.alias, req.body.company, req.body.address);
-		if (req.body.phones) {
+		insertContact(user_id, req.body.firstName, req.body.lastName, req.body.alias, req.body.company, req.body.address, req.body.color);
+		if (req.body.phones && req.body.phones.length > 0) {
 			req.body.phones.forEach((phone) => {
 				insertContactPhone(user_id, 1, phone.type, phone.code, phone.number);
 			});
 		}
-		if (req.body.emails) {
+		if (req.body.emails && req.body.emails.length > 0) {
 			req.body.emails.forEach((email) => {
 				const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
 				if (!regex.test(email.direction)) {
@@ -41,7 +41,7 @@ export async function register(req, res) {
 				insertContactEmail(user_id, 1, email.type, email.direction);
 			});
 		}
-		if (req.body.dates) {
+		if (req.body.dates && req.body.dates.length > 0) {
 			req.body.dates.forEach((date) => {
 				const regex = /^\d{4}-\d{2}-\d{2}$/;
 				if (!regex.test(date.date)) {
@@ -51,7 +51,7 @@ export async function register(req, res) {
 				insertContactDate(user_id, 1, date.type, date.date);
 			});
 		}
-		if (req.body.urls) {
+		if (req.body.urls && req.body.urls.length > 0) {
 			req.body.urls.forEach((url) => {
 				insertContactURL(user_id, 1, url.url);
 			});

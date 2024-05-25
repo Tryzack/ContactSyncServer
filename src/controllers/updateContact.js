@@ -17,12 +17,14 @@ export async function updateContact(req, res) {
 		req.body.lastName,
 		req.body.alias,
 		req.body.company,
-		req.body.address
+		req.body.address,
+		req.body.color
 	);
 
 	if (result) {
 		res.send({ message: "Contact updated" });
 	} else {
 		res.status(400).send({ message: "Error updating contact" });
+		console.log(result);
 	}
 }

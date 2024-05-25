@@ -307,8 +307,9 @@ async function insertContactGroup(userId, contactId, groupId) {
  * @param {string} contactAlias - Contact alias
  * @param {string} company - Contact company
  * @param {string} address - Contact address
+ * @param {integer} color - Contact color
  */
-async function insertContact(userId, firstName, lastName, contactAlias, company, address) {
+async function insertContact(userId, firstName, lastName, contactAlias, company, address, color) {
 	try {
 		const client = await connect();
 		if (!client) return false;
@@ -321,6 +322,7 @@ async function insertContact(userId, firstName, lastName, contactAlias, company,
 			contactAlias ? contactAlias : "",
 			company ? company : "",
 			address ? address : "",
+			color ? color : 1,
 		]);
 		client.end();
 		return true;
@@ -433,15 +435,14 @@ async function insertContactURL(userId, contactId, url) {
  * @param {string} contactAlias - Contact alias
  * @param {string} company - Contact company
  * @param {string} address - Contact address
+ * @param {integer} color - Contact color
  */
-async function updateContact(userId, contactId, firstName = "", lastName = "", contactAlias = "", company = "", address = "") {
+async function updateContact(userId, contactId, firstName = "", lastName = "", contactAlias = "", company = "", address = "", color = 1) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		if (contactId === 1) {
-			return false;
-		}
-		await client.query(queries.update.updateContact, [firstName, lastName, contactAlias, company, address, contactId, userId]);
+
+		await client.query(queries.update.updateContact, [firstName, lastName, contactAlias, company, address, color, contactId, userId]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -566,7 +567,7 @@ async function deleteContact(userId, contactId) {
 		await client.query(queries.delete.deleteContactEmails, [contactId, userId]);
 		await client.query(queries.delete.deleteContactURLs, [contactId, userId]);
 		await client.query(queries.delete.deleteContactDates, [contactId, userId]);
-		await client.query(queries.delete.deleteContactFromAllGroups, [userId, contactId]);
+		await client.query(queries.delete.deleteContactFromAllGroups, [contactId, userId]);
 		await client.query(queries.delete.deleteContact, [contactId, userId]);
 		client.end();
 		return true;

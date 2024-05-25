@@ -10,7 +10,15 @@ export async function createContact(req, res) {
 		return;
 	}
 
-	const result = await insertContact(req.session.userId, req.body.firstName, req.body.lastName, req.body.alias, req.body.company, req.body.address);
+	const result = await insertContact(
+		req.session.userId,
+		req.body.firstName,
+		req.body.lastName,
+		req.body.alias,
+		req.body.company,
+		req.body.address,
+		req.body.color
+	);
 
 	if (result) {
 		res.send({ message: "Contact created" });

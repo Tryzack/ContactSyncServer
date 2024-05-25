@@ -4,9 +4,9 @@ const queries = {
 		getUserByEmail: "SELECT id, email, user_password FROM users WHERE email = $1",
 		getUserById: "SELECT * FROM users WHERE id = $1",
 		getContacts:
-			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, cp.phone_code, cp.phone_number FROM contact c LEFT JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND cp.id = 1",
+			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, c.color, cp.phone_code, cp.phone_number FROM contact c LEFT JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND cp.id = 1",
 		getMaxContactId: "SELECT MAX(id) FROM contact WHERE user_id = $1",
-		getContactById: "SELECT id, first_name, last_name, contact_alias, company, address FROM contact WHERE id = $1 AND user_id = $2",
+		getContactById: "SELECT id, first_name, last_name, contact_alias, company, address, color FROM contact WHERE id = $1 AND user_id = $2",
 		getContactPhone: " SELECT id phone_type, phone_code, phone_number FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactPhoneId: "SELECT MAX(id) FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getContactEmail: "SELECT id, email_type, email_direction FROM contact_email WHERE contact_id = $1 AND user_id = $2",
@@ -20,12 +20,12 @@ const queries = {
 		getGroupById: "SELECT * FROM group_data WHERE id = $1 AND user_id = $2",
 		getContactGroups: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1",
 		getContactsByGroup:
-			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, cp.phone_code, cp.phone_number FROM contact c INNER JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND c.id IN (SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2) AND cp.id = 1",
+			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, c.color, cp.phone_code, cp.phone_number FROM contact c INNER JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND c.id IN (SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2) AND cp.id = 1",
 	},
 	insert: {
 		insertUser: "INSERT INTO users (id, email, user_password) VALUES ($1, $2, $3)",
 		insertContact:
-			"INSERT INTO contact (id, user_id, first_name, last_name, contact_alias, company, address) VALUES ($1, $2, $3, $4, $5, $6, $7)",
+			"INSERT INTO contact (id, user_id, first_name, last_name, contact_alias, company, address, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
 		insertGroup: "INSERT INTO group_data (id, user_id, group_name, group_description) VALUES ($1, $2, $3, $4)",
 		insertContactGroup: "INSERT INTO contact_group (user_id, contact_id, group_id) VALUES ($1, $2, $3)",
 		insertContactPhone:
@@ -36,7 +36,7 @@ const queries = {
 	},
 	update: {
 		updateContact:
-			"UPDATE contact SET first_name = $1, last_name = $2, contact_alias = $3, company = $4, address = $5 WHERE id = $6 AND user_id = $7",
+			"UPDATE contact SET first_name = $1, last_name = $2, contact_alias = $3, company = $4, address = $5, color = $6 WHERE id = $7 AND user_id = $8",
 		updateContactPhone:
 			"UPDATE contact_phone SET phone_type = $1, phone_code = $2, phone_number = $3 WHERE contact_id = $4 AND user_id = $5 AND id = $6",
 		updateContactEmail: "UPDATE contact_email SET email_type = $1, email_direction = $2 WHERE contact_id = $3 AND user_id = $4 AND id = $5",
@@ -57,7 +57,7 @@ const queries = {
 		deleteGroup: "DELETE FROM group_data WHERE id = $1 AND user_id = $2",
 		/* deleteContactGroup: "DELETE FROM contact_group WHERE contact_id = $1 AND user_id = $2", */
 		deleteAllContactsFromGroup: "DELETE FROM contact_group WHERE group_id = $1 AND user_id = $2",
-		deleteContactFromAllGroups: "DELETE FROM contact_group WHERE group_id = $1 AND user_id = $2",
+		deleteContactFromAllGroups: "DELETE FROM contact_group WHERE contact_id = $1 AND user_id = $2",
 		deleteContactFromGroup: "DELETE FROM contact_group WHERE contact_id = $1 AND group_id = $2 AND user_id = $3",
 	},
 };
