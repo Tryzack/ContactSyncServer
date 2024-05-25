@@ -7,6 +7,7 @@ import {
 	insertContactDate,
 	insertContactEmail,
 	insertContactURL,
+	getUserByEmail,
 } from "../utils/DBComponent.js";
 
 export async function register(req, res) {
@@ -16,11 +17,17 @@ export async function register(req, res) {
 	}
 
 	try {
+		const existingUser = await getUserByEmail(req.body.email);
+		if (existingUser) {
+			res.status(400).send({ message: "User already exists" });
+			return;
+		}
+
 		const salt = await bcrypt.genSalt(10);
 		const password = await bcrypt.hash(req.body.password, salt);
 		let user_id = await insertUser(req.body.email, password);
 		if (user_id === false) {
-			res.status(400).send({ message: "User already exists" });
+			res.status(400).send({ message: "There was an error" });
 			return;
 		}
 		insertGroup(user_id, "Favorites", "List of favorite contacts");

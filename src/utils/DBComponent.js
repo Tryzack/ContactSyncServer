@@ -207,6 +207,25 @@ async function getContactByGroups(userId, groupId) {
 		return [];
 	}
 }
+/**
+ * Get contact group
+ * @param {number} userId - User id
+ * @param {number} contactId - Contact id
+ * @param {number} groupId - Group id
+ * @returns {Object} - The contact in the group
+ */
+async function getContactGroup(userId, contactId, groupId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactGroup, [userId, contactId, groupId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
 
 /**
  * Get all contacts and groups
@@ -427,6 +446,42 @@ async function insertContactURL(userId, contactId, url) {
 }
 
 /**
+ * Update user
+ * @param {number} userId - User id
+ * @param {string} email - User email
+ */
+async function updateUserEmail(userId, email) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateUserEmail, [email, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * Update user password
+ * @param {number} userId - User id
+ * @param {string} password - User password
+ */
+async function updateUserPassword(userId, password) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.update.updateUserPassword, [password, userId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
  * Update contact
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
@@ -546,6 +601,30 @@ async function updateGroup(userId, groupId, groupName, groupDescription) {
 		const client = await connect();
 		if (!client) return false;
 		await client.query(queries.update.updateGroup, [groupName, groupDescription, userId, groupId]);
+		client.end();
+		return true;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
+ * Delete user
+ * @param {number} userId
+ */
+async function deleteUser(userId) {
+	try {
+		const client = await connect();
+		if (!client) return false;
+		await client.query(queries.delete.deleteUserFromContactDate, [userId]);
+		await client.query(queries.delete.deleteUserFromContactEmail, [userId]);
+		await client.query(queries.delete.deleteUserFromContactPhone, [userId]);
+		await client.query(queries.delete.deleteUserFromContactURL, [userId]);
+		await client.query(queries.delete.deleteUserFromContacts, [userId]);
+		await client.query(queries.delete.deleteUserFromContactGroup, [userId]);
+		await client.query(queries.delete.deleteUserFromGroups, [userId]);
+		await client.query(queries.delete.deleteUser, [userId]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -706,6 +785,7 @@ export {
 	getContactDate,
 	getGroups,
 	getContactByGroups,
+	getContactGroup,
 	getAllContactsAndGroups,
 	insertUser,
 	insertGroup,
@@ -715,12 +795,15 @@ export {
 	insertContactDate,
 	insertContactEmail,
 	insertContactURL,
+	updateUserEmail,
+	updateUserPassword,
 	updateContact,
 	updateContactPhone,
 	updateContactEmail,
 	updateContactURL,
 	updateContactDate,
 	updateGroup,
+	deleteUser,
 	deleteContact,
 	deleteContactEmail,
 	deleteContactURL,

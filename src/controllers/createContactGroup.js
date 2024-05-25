@@ -1,4 +1,4 @@
-import { insertContactGroup } from "../utils/DBComponent.js";
+import { insertContactGroup, getContactGroup } from "../utils/DBComponent.js";
 
 export async function createContactGroup(req, res) {
 	if (!req.session.userId) {
@@ -7,6 +7,13 @@ export async function createContactGroup(req, res) {
 	}
 	if (!req.body.contactId || !req.body.groupId) {
 		res.status(400).send({ message: "Missing fields" });
+		return;
+	}
+
+	// check if contact is already in group
+	const contactGroup = await getContactGroup(req.session.userId, req.body.contactId, req.body.groupId);
+	if (contactGroup && contactGroup.length > 0) {
+		res.status(400).send({ message: "Contact is already in group" });
 		return;
 	}
 

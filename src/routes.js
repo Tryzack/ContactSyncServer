@@ -28,6 +28,8 @@ import { createContactDate } from "./controllers/createContactDate.js";
 
 //update controllers
 
+import { updateUserEmail } from "./controllers/updateUserEmail.js";
+import { updateUserPassword } from "./controllers/updateUserPassword.js";
 import { updateContact } from "./controllers/updateContact.js";
 import { updateContactPhone } from "./controllers/updatePhone.js";
 import { updateContactEmail } from "./controllers/updateContactEmail.js";
@@ -36,7 +38,7 @@ import { updateContactDate } from "./controllers/updateContactDate.js";
 import { updateGroup } from "./controllers/updateGroup.js";
 
 //delete controllers
-
+import { deleteUser } from "./controllers/deleteUser.js";
 import { deleteContact } from "./controllers/deleteContact.js";
 import { deleteContactPhone } from "./controllers/deleteContactPhone.js";
 import { deleteContactEmail } from "./controllers/deleteContactEmail.js";
@@ -73,6 +75,8 @@ router.post("/createURL", createURL);
 router.post("/createContactDate", createContactDate);
 
 // update routes
+router.put("/updateUserEmail", updateUserEmail);
+router.put("/updateUserPassword", updateUserPassword);
 router.put("/updateContact", updateContact);
 router.put("/updateContactPhone", updateContactPhone);
 router.put("/updateContactEmail", updateContactEmail);
@@ -81,6 +85,7 @@ router.put("/updateContactDate", updateContactDate);
 router.put("/updateGroup", updateGroup);
 
 // delete routes
+router.delete("/deleteUser", deleteUser);
 router.delete("/deleteContact", deleteContact);
 router.delete("/deleteContactPhone", deleteContactPhone);
 router.delete("/deleteContactEmail", deleteContactEmail);

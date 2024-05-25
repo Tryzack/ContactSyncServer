@@ -19,6 +19,7 @@ const queries = {
 		getMaxGroupId: "SELECT MAX(id) FROM group_data WHERE user_id = $1",
 		getGroupById: "SELECT * FROM group_data WHERE id = $1 AND user_id = $2",
 		getContactGroups: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1",
+		getContactGroup: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1 AND contact_id = $2 AND group_id = $3",
 		getContactsByGroup:
 			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, c.color, cp.phone_code, cp.phone_number FROM contact c INNER JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND c.id IN (SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2) AND cp.id = 1",
 	},
@@ -35,6 +36,8 @@ const queries = {
 		insertContactDate: "INSERT INTO contact_date (id, user_id, contact_id, date_type, contact_date) VALUES ($1, $2, $3, $4, $5)",
 	},
 	update: {
+		updateUserEmail: "UPDATE users SET email = $1 WHERE id = $2",
+		updateUserPassword: "UPDATE users SET user_password = $1 WHERE id = $2",
 		updateContact:
 			"UPDATE contact SET first_name = $1, last_name = $2, contact_alias = $3, company = $4, address = $5, color = $6 WHERE id = $7 AND user_id = $8",
 		updateContactPhone:
@@ -45,6 +48,14 @@ const queries = {
 		updateGroup: "UPDATE group_data SET group_name = $1, group_description = $2 WHERE user_id = $3 AND id = $4",
 	},
 	delete: {
+		deleteUser: "DELETE FROM users WHERE id = $1",
+		deleteUserFromContactDate: "DELETE FROM contact_date WHERE user_id = $1",
+		deleteUserFromContactEmail: "DELETE FROM contact_email WHERE user_id = $1",
+		deleteUserFromContactPhone: "DELETE FROM contact_phone WHERE user_id = $1",
+		deleteUserFromContactURL: "DELETE FROM contact_url WHERE user_id = $1",
+		deleteUserFromContacts: "DELETE FROM contact WHERE user_id = $1",
+		deleteUserFromContactGroup: "DELETE FROM contact_group WHERE user_id = $1",
+		deleteUserFromGroups: "DELETE FROM group_data WHERE user_id = $1",
 		deleteContact: "DELETE FROM contact WHERE id = $1 AND user_id = $2",
 		deleteContactPhone: "DELETE FROM contact_phone WHERE contact_id = $1 AND user_id = $2 AND id = $3",
 		deleteContactPhones: "DELETE FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
