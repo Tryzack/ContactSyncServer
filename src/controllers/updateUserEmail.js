@@ -6,6 +6,11 @@ export async function updateUserEmail(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
+	const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+	if (!regex.test(req.body.newEmail)) {
+		res.status(400).send({ message: "Invalid email format" });
+		return;
+	}
 	try {
 		const user = await getUserByEmail(req.body.oldEmail);
 		if (!user) {

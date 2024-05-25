@@ -15,6 +15,10 @@ export async function register(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
+	if (req.body.password.length < 8) {
+		res.status(400).send({ message: "Password must be at least 8 characters" });
+		return;
+	}
 
 	try {
 		const existingUser = await getUserByEmail(req.body.email);

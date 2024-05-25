@@ -8,8 +8,8 @@ export async function getContactById(req, res) {
 	const contactId = req.query.id;
 	try {
 		const result = await getContactByIdDB(req.session.userId, contactId);
-		if (!result) {
-			res.status(500).send({ message: "Error getting contact" });
+		if (!result || result.length === 0) {
+			res.status(500).send({ message: "Contact does not exist" });
 			return;
 		}
 		const phones = await getContactPhone(req.session.userId, contactId);
@@ -32,6 +32,10 @@ export async function getContactById(req, res) {
 			res.status(500).send({ message: "Error getting contact dates" });
 			return;
 		}
+		result.phones = phones;
+		result.emails = emails;
+		result.urls = urls;
+		result.dates = dates;
 
 		res.status(200).json({ message: "Contact found", contact: result });
 	} catch (error) {

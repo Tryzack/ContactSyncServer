@@ -1,4 +1,4 @@
-import { deleteUser as deleteUserDB } from "../utils/DBComponent.js";
+import { deleteUser as deleteUserDB, getUserByEmail } from "../utils/DBComponent.js";
 import bcrypt from "bcrypt";
 
 export async function deleteUser(req, res) {
