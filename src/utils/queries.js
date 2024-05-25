@@ -3,9 +3,10 @@ const queries = {
 		getUsers: "SELECT id, email FROM users",
 		getUserByEmail: "SELECT id, email, user_password FROM users WHERE email = $1",
 		getUserById: "SELECT * FROM users WHERE id = $1",
-		getContacts: "SELECT id, first_name, last_name, contact_alias, company, address FROM contact WHERE user_id = $1",
+		getContacts:
+			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, cp.phone_code, cp.phone_number FROM contact c LEFT JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND cp.id = 1",
 		getMaxContactId: "SELECT MAX(id) FROM contact WHERE user_id = $1",
-		getContactById: "SELECT * FROM contact WHERE id = $1 AND user_id = $2",
+		getContactById: "SELECT id, first_name, last_name, contact_alias, company, address FROM contact WHERE id = $1 AND user_id = $2",
 		getContactPhone: " SELECT id phone_type, phone_code, phone_number FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactPhoneId: "SELECT MAX(id) FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getContactEmail: "SELECT id, email_type, email_direction FROM contact_email WHERE contact_id = $1 AND user_id = $2",
@@ -18,7 +19,8 @@ const queries = {
 		getMaxGroupId: "SELECT MAX(id) FROM group_data WHERE user_id = $1",
 		getGroupById: "SELECT * FROM group_data WHERE id = $1 AND user_id = $2",
 		getContactGroups: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1",
-		getContactsByGroup: "SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2",
+		getContactsByGroup:
+			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, cp.phone_code, cp.phone_number FROM contact c INNER JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND c.id IN (SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2) AND cp.id = 1",
 	},
 	insert: {
 		insertUser: "INSERT INTO users (id, email, user_password) VALUES ($1, $2, $3)",
