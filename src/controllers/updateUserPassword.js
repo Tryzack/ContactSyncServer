@@ -2,6 +2,10 @@ import { updateUserPassword as updateUserDB, getUserByEmail } from "../utils/DBC
 import bcrypt from "bcrypt";
 
 export async function updateUserPassword(req, res) {
+	if (req.session.userId) {
+		res.status(401).send({ message: "Unauthorized" });
+		return;
+	}
 	if (!req.body.email || !req.body.oldPassword || !req.body.newPassword) {
 		res.status(400).send({ message: "Missing fields" });
 		return;

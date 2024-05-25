@@ -1,5 +1,12 @@
 import nodemailer from "nodemailer";
 
+/**
+ * @param {Object} email - Email to send
+ * @param {string} email.email - Email to send
+ * @param {string} email.subject - Email subject
+ * @param {string} email.body - Email body
+ * @returns {string} - Email response
+ */
 export function sendEmail({ email, subject, body }) {
 	const transporter = nodemailer.createTransport({
 		service: "gmail",
