@@ -6,7 +6,7 @@ const queries = {
 		getContacts: "SELECT id, first_name, last_name, contact_alias, company, address FROM contact WHERE user_id = $1",
 		getMaxContactId: "SELECT MAX(id) FROM contact WHERE user_id = $1",
 		getContactById: "SELECT * FROM contact WHERE id = $1 AND user_id = $2",
-		getContactPhone: " id SELECT phone_type, phone_code, phone_number FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
+		getContactPhone: " SELECT id phone_type, phone_code, phone_number FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactPhoneId: "SELECT MAX(id) FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getContactEmail: "SELECT id, email_type, email_direction FROM contact_email WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactEmailId: "SELECT MAX(id) FROM contact_email WHERE contact_id = $1 AND user_id = $2",
@@ -17,7 +17,7 @@ const queries = {
 		getGroups: "SELECT id, group_name, group_description FROM group_data WHERE user_id = $1",
 		getMaxGroupId: "SELECT MAX(id) FROM group_data WHERE user_id = $1",
 		getGroupById: "SELECT * FROM group_data WHERE id = $1 AND user_id = $2",
-		getContactGroups: "SELECT group_id FROM contact_group WHERE user_id = $1",
+		getContactGroups: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1",
 		getContactsByGroup: "SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2",
 	},
 	insert: {

@@ -5,6 +5,19 @@ import { login } from "./controllers/login.js";
 import { register } from "./controllers/register.js";
 import { logout } from "./controllers/logout.js";
 
+//get controllers
+import { getContacts } from "./controllers/getContacts.js";
+import { getContactById } from "./controllers/getContactById.js";
+import { getContactPhone } from "./controllers/getContactPhone.js";
+import { getContactEmail } from "./controllers/getContactEmail.js";
+import { getContactURL } from "./controllers/getContactURL.js";
+import { getContactDate } from "./controllers/getContactDate.js";
+import { getGroups } from "./controllers/getGroups.js";
+import { getContactsByGroups } from "./controllers/getContactsByGroups.js";
+import { getAllContactsAndGroups } from "./controllers/getAllContactsAndGroups.js";
+
+//create controllers
+
 import { createContact } from "./controllers/createContact.js";
 import { createGroup } from "./controllers/createGroup.js";
 import { createContactGroup } from "./controllers/createContactGroup.js";
@@ -13,12 +26,16 @@ import { createEmail } from "./controllers/createEmail.js";
 import { createURL } from "./controllers/createURL.js";
 import { createContactDate } from "./controllers/createContactDate.js";
 
+//update controllers
+
 import { updateContact } from "./controllers/updateContact.js";
 import { updateContactPhone } from "./controllers/updatePhone.js";
 import { updateContactEmail } from "./controllers/updateContactEmail.js";
 import { updateContactURL } from "./controllers/updateContactURL.js";
 import { updateContactDate } from "./controllers/updateContactDate.js";
 import { updateGroup } from "./controllers/updateGroup.js";
+
+//delete controllers
 
 import { deleteContact } from "./controllers/deleteContact.js";
 import { deleteContactPhone } from "./controllers/deleteContactPhone.js";
@@ -34,6 +51,17 @@ const router = Router();
 router.post("/login", login);
 router.post("/register", register);
 router.get("/logout", logout);
+
+// get routes
+router.get("/getContacts", getContacts);
+router.get("/getContactById", getContactById);
+router.get("/getContactPhone", getContactPhone);
+router.get("/getContactEmail", getContactEmail);
+router.get("/getContactURL", getContactURL);
+router.get("/getContactDate", getContactDate);
+router.get("/getGroups", getGroups);
+router.get("/getContactsByGroup", getContactsByGroups);
+router.get("/getAllContactsAndGroups", getAllContactsAndGroups);
 
 // create routes
 router.post("/createContact", createContact);

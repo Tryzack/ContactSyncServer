@@ -25,18 +25,6 @@ async function connect() {
 	}
 }
 
-/* async function testDatabase() {
-	try {
-		const client = await connect();
-		if (!client) return false;
-		console.log("Connected to the database");
-		client.end();
-	} catch (error) {
-		console.error(error);
-	}
-}
- */
-
 /**
  * Get all users
  * @returns {Array} - Array of users
@@ -44,7 +32,7 @@ async function connect() {
 async function getUsers() {
 	try {
 		const client = await connect();
-		if (!client) return [];
+		if (!client) return null;
 		const result = await client.query(queries.select.getUsers);
 		client.end();
 		return result.rows;
@@ -68,6 +56,173 @@ async function getUserByEmail(email) {
 	} catch (error) {
 		console.error(error);
 		return null;
+	}
+}
+
+/**
+ * Get contacts
+ * @param {number} userId - User id
+ * @returns {Array} - Array of contacts
+ */
+async function getContacts(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContacts, [userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+/**
+ * Get contact by id
+ * @param {number} userId - User id
+ * @param {number} contactId - Contact id
+ * @returns {Object} - Contact object
+ */
+async function getContactById(userId, contactId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactById, [contactId, userId]);
+		client.end();
+		return result.rows[0];
+	} catch (error) {
+		console.error(error);
+		return {};
+	}
+}
+
+/**
+ * Get contact phone numbers
+ * @param {number} userId - User id
+ * @param {number} contactId - Contact id
+ * @returns {Array} - Array of phone numbers
+ */
+async function getContactPhone(userId, contactId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactPhone, [contactId, userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * Get contact emails
+ * @param {number} userId - User id
+ * @param {number} contactId - Contact id
+ * @returns {Array} - Array of emails
+ */
+async function getContactEmail(userId, contactId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactEmail, [contactId, userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * Get contact URLs
+ * @param {number} userId - User id
+ * @param {number} contactId - Contact id
+ * @returns {Array} - Array of URLs
+ */
+async function getContactURL(userId, contactId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactURL, [contactId, userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * Get contact dates
+ * @param {number} userId - User id
+ * @param {number} contactId - Contact id
+ * @returns {Array} - Array of dates
+ */
+async function getContactDate(userId, contactId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactDate, [contactId, userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * Get groups
+ * @param {number} userId - User id
+ * @returns {Array} - Array of groups
+ */
+async function getGroups(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getGroups, [userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * get contacts by group
+ * @param {number} userId - User id
+ * @param {number} groupId - Group id
+ * @returns {Array} - Array of contacts in the group
+ */
+async function getContactByGroups(userId, groupId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getContactsByGroup, [userId, groupId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return [];
+	}
+}
+
+/**
+ * Get all contacts and groups
+ * @param {number} userId - User id
+ * @returns {Array} - Array of contacts and groups
+ */
+async function getAllContactsAndGroups(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const contactsAndGroups = await client.query(queries.select.getContactGroups, [userId]);
+		client.end();
+		return { contacts: contactsAndGroups.rows };
+	} catch (error) {
+		console.error(error);
+		return [];
 	}
 }
 
@@ -542,6 +697,15 @@ getUsers().then((users) => {
 export {
 	getUsers,
 	getUserByEmail,
+	getContacts,
+	getContactById,
+	getContactPhone,
+	getContactEmail,
+	getContactURL,
+	getContactDate,
+	getGroups,
+	getContactByGroups,
+	getAllContactsAndGroups,
 	insertUser,
 	insertGroup,
 	insertContactGroup,
