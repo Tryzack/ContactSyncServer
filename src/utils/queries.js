@@ -21,7 +21,7 @@ const queries = {
 		getContactGroups: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1",
 		getContactGroup: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1 AND contact_id = $2 AND group_id = $3",
 		getContactsByGroup:
-			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, c.color, cp.phone_code, cp.phone_number FROM contact c INNER JOIN contact_phone cp ON c.id = cp.contact_id WHERE c.user_id = $1 AND c.id IN (SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2) AND cp.id = 1",
+			"SELECT c.id, c.first_name, c.last_name, c.contact_alias, c.color, cp.phone_code, cp.phone_number FROM contact c LEFT JOIN contact_phone cp ON c.id = cp.contact_id AND cp.id = 1 WHERE c.user_id = $1 AND c.id IN (SELECT contact_id FROM contact_group WHERE user_id = $1 AND group_id = $2)",
 	},
 	insert: {
 		insertUser: "INSERT INTO users (id, email, user_password) VALUES ($1, $2, $3)",

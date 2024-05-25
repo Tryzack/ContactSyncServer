@@ -15,7 +15,6 @@ export async function createMultipleContactGroup(req, res) {
 	let contactsAlreadyInGroup = [];
 
 	for (const contactId of contactIds) {
-		// check if contact is already in group
 		const contactGroup = await getContactGroup(req.session.userId, contactId, groupId);
 		if (contactGroup && contactGroup.length > 0) {
 			contactsAlreadyInGroup.push(contactId);
@@ -33,12 +32,11 @@ export async function createMultipleContactGroup(req, res) {
 			return;
 		}
 	}
-	if (contactsAlreadyInGroup.length > 0) {
-		res.send({ message: "Contacts added to group, some contacts were alredy in group" });
-		return;
-	}
 	if (contactIds.length === contactsAlreadyInGroup.length) {
 		res.send({ message: "Contacts already in group" });
+		return;
+	} else if (contactsAlreadyInGroup.length > 0) {
+		res.send({ message: "Contacts added to group, some contacts were alredy in group" });
 		return;
 	}
 	res.send({ message: "Contacts added to group" });
