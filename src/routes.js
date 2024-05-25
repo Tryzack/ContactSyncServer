@@ -21,6 +21,7 @@ import { getAllContactsAndGroups } from "./controllers/getAllContactsAndGroups.j
 import { createContact } from "./controllers/createContact.js";
 import { createGroup } from "./controllers/createGroup.js";
 import { createContactGroup } from "./controllers/createContactGroup.js";
+import { createMultipleContactGroup } from "./controllers/createMultipleContactGroup.js";
 import { createPhone } from "./controllers/createPhone.js";
 import { createEmail } from "./controllers/createEmail.js";
 import { createURL } from "./controllers/createURL.js";
@@ -68,6 +69,7 @@ router.get("/getAllContactsAndGroups", getAllContactsAndGroups);
 // create routes
 router.post("/createContact", createContact);
 router.post("/createGroup", createGroup);
+router.post("/InsertMultipleContactToGroup", createMultipleContactGroup);
 router.post("/InsertContactToGroup", createContactGroup);
 router.post("/createPhone", createPhone);
 router.post("/createEmail", createEmail);
