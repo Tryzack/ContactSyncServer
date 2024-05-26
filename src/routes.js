@@ -1,11 +1,16 @@
 import { Router } from "express";
 
 //import controllers
+
 import { login } from "./controllers/login.js";
 import { register } from "./controllers/register.js";
 import { logout } from "./controllers/logout.js";
+import { forgotPassword } from "./controllers/forgotPassword.js";
+import { recoveryCode } from "./controllers/recoveryCode.js";
+import { recoveryPassword } from "./controllers/recoveryPassword.js";
 
 //get controllers
+
 import { getContacts } from "./controllers/getContacts.js";
 import { getContactById } from "./controllers/getContactById.js";
 import { getContactPhone } from "./controllers/getContactPhone.js";
@@ -54,6 +59,9 @@ const router = Router();
 router.post("/login", login);
 router.post("/register", register);
 router.get("/logout", logout);
+router.post("/forgotPassword", forgotPassword);
+router.post("/recoveryCode", recoveryCode);
+router.post("/recoveryPassword", recoveryPassword);
 
 // get routes
 router.get("/getContacts", getContacts);

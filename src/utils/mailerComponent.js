@@ -5,9 +5,10 @@ import nodemailer from "nodemailer";
  * @param {string} email.email - Email to send
  * @param {string} email.subject - Email subject
  * @param {string} email.body - Email body
+ * @param {string} email.type - Email type (text or html)
  * @returns {string} - Email response
  */
-export function sendEmail({ email, subject, body }) {
+export async function sendEmail({ email, subject, body, type = "text" }) {
 	const transporter = nodemailer.createTransport({
 		service: "gmail",
 		auth: {
@@ -20,8 +21,12 @@ export function sendEmail({ email, subject, body }) {
 		from: process.env.EMAIL,
 		to: email,
 		subject: subject,
-		text: body,
 	};
+	if (type === "html") {
+		mailOptions.html = body;
+	} else {
+		mailOptions.text = body;
+	}
 
 	transporter.sendMail(mailOptions, (error, info) => {
 		if (error) {
