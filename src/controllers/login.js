@@ -1,6 +1,11 @@
 import bcrypt from "bcrypt";
 import { getUserByEmail } from "../utils/DBComponent.js";
 
+/**
+ * Log in
+ * @param {String} req.body.email - Required
+ * @param {String} req.body.password - Required
+ */
 export async function login(req, res) {
 	if (req.session.userId) {
 		res.status(400).send({ message: "Already logged in" });

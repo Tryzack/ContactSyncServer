@@ -3,6 +3,12 @@ import { updateUserPassword, getUserByEmail } from "../utils/DBComponent.js";
 import { sendEmail } from "../utils/mailerComponent.js";
 import bcrypt from "bcrypt";
 
+/**
+ * Changes the password of a user after verifying the recovery code
+ * @param {String} req.body.email - Required
+ * @param {String} req.body.newPassword - Required
+ * @param {String} req.body.code - Required
+ */
 export async function recoveryPassword(req, res) {
 	if (!req.body.email || !req.body.newPassword || !req.body.code) {
 		res.status(400).send({ message: "Missing fields" });
@@ -25,6 +31,10 @@ export async function recoveryPassword(req, res) {
 		}
 		if (keys[user.id].key !== req.body.code) {
 			res.status(400).send({ message: "Invalid code" });
+			return;
+		}
+		if (newPassword.length < 8) {
+			res.status(400).send({ message: "Password must be at least 8 characters" });
 			return;
 		}
 		const newPassword = await bcrypt.hash(req.body.newPassword, 10);

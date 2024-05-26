@@ -1,6 +1,12 @@
 import { updateUserPassword as updateUserDB, getUserByEmail } from "../utils/DBComponent.js";
 import bcrypt from "bcrypt";
 
+/**
+ * Update user password
+ * @param {String} req.body.email - Required
+ * @param {String} req.body.oldPassword - Required
+ * @param {String} req.body.newPassword - Required
+ */
 export async function updateUserPassword(req, res) {
 	if (req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

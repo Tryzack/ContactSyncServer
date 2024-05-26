@@ -1,5 +1,9 @@
 import { getAllContactsAndGroups as getAllContactsAndGroupsDB } from "../utils/DBComponent.js";
 
+/**
+ * Get all contacts inside of each group
+ * @returns {Object} - Contacts and groups
+ */
 export async function getAllContactsAndGroups(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

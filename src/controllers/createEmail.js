@@ -1,5 +1,11 @@
 import { insertContactEmail } from "../utils/DBComponent.js";
 
+/**
+ * Create a new email
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.emailType - Optional
+ * @param {String} req.body.emailDirection - Required
+ */
 export async function createEmail(req, res) {
 	if (!req.session.userId) {
 		return res.status(401).send({ message: "Unauthorized" });

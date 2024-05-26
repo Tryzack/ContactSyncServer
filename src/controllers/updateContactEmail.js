@@ -1,5 +1,12 @@
 import { updateContactEmail as updateContactEmailDB } from "../utils/DBComponent.js";
 
+/**
+ * Update a contact email
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.emailDirection - Required
+ * @param {Number} req.body.id - Required
+ * @param {Number} req.body.emailType - Optional
+ */
 export async function updateContactEmail(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

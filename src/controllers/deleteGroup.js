@@ -1,5 +1,9 @@
 import { deleteGroup as deleteGroupDB } from "../utils/DBComponent.js";
 
+/**
+ * Delete a group
+ * @param {Number} req.body.groupId - Required
+ */
 export async function deleteGroup(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

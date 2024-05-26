@@ -1,5 +1,13 @@
 import { updateContactPhone as updateContactPhoneDB } from "../utils/DBComponent.js";
 
+/**
+ * Update a phone from a contact
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.phoneNumber - Required
+ * @param {Number} req.body.id - Required
+ * @param {Number} req.body.phoneType - Optional
+ * @param {Number} req.body.phoneCode - Optional
+ */
 export async function updateContactPhone(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

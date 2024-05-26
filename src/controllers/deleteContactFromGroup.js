@@ -1,5 +1,10 @@
 import { deleteContactFromGroup as deleteContactFromGroupDB } from "../utils/DBComponent.js";
 
+/**
+ * Delete a contact from a group
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.groupId - Required
+ */
 export const deleteContactFromGroup = async (req, res) => {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

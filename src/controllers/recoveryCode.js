@@ -1,6 +1,12 @@
 import { getResetKeys, setResetKey } from "../utils/resetKeys.js";
 import { getUserByEmail } from "../utils/DBComponent.js";
 
+/**
+ * Check if recovery code is valid
+ * @param {String} req.body.email - Required
+ * @param {String} req.body.code - Required
+ * @returns {Object} - Response
+ */
 export async function recoveryCode(req, res) {
 	if (!req.body.email || !req.body.code) {
 		res.status(400).send({ message: "Missing fields" });
@@ -21,7 +27,7 @@ export async function recoveryCode(req, res) {
 			res.status(400).send({ message: "Invalid code" });
 			return;
 		}
-		res.status(200).send({ message: "Code is valid" });
+		res.status(200).send({ message: "Code is valid", response: true });
 		setResetKey(user.id, { email: req.body.email, key: req.body.code, wasUsed: true });
 	} catch (error) {
 		console.error(error);

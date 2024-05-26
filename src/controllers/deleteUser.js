@@ -1,7 +1,16 @@
 import { deleteUser as deleteUserDB, getUserByEmail } from "../utils/DBComponent.js";
 import bcrypt from "bcrypt";
 
+/**
+ * Delete a user
+ * @param {String} req.body.email - Required
+ * @param {String} req.body.password - Required
+ */
 export async function deleteUser(req, res) {
+	if (!req.session.userId) {
+		res.status(401).send({ message: "Unauthorized" });
+		return;
+	}
 	if (!req.body.email || !req.body.password) {
 		res.status(400).send({ message: "Missing fields" });
 		return;

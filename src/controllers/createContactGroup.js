@@ -1,5 +1,11 @@
 import { insertContactGroup, getContactGroup } from "../utils/DBComponent.js";
 
+/**
+ * Create a new contact group
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.groupId - Required
+ */
+
 export async function createContactGroup(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

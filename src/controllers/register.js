@@ -10,6 +10,21 @@ import {
 	getUserByEmail,
 } from "../utils/DBComponent.js";
 
+/**
+ * Register a new user
+ * @param {String} req.body.email - Required
+ * @param {String} req.body.password - Required
+ * @param {String} req.body.firstName - Required
+ * @param {String} req.body.lastName - Optional
+ * @param {String} req.body.alias - Optional
+ * @param {String} req.body.company - Optional
+ * @param {String} req.body.address - Optional
+ * @param {String} req.body.color - Optional
+ * @param {Array} req.body.phones - Optional
+ * @param {Array} req.body.emails - Optional
+ * @param {Array} req.body.dates - Optional
+ * @param {Array} req.body.urls - Optional
+ */
 export async function register(req, res) {
 	if (!req.body.email || !req.body.password || !req.body.firstName) {
 		res.status(400).send({ message: "Missing fields" });

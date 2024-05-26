@@ -2,6 +2,10 @@ import { getUserByEmail } from "../utils/DBComponent.js";
 import { sendEmail } from "../utils/mailerComponent.js";
 import { deleteResetKey, getResetKeys, setResetKey } from "../utils/resetKeys.js";
 
+/**
+ * Send an email with a recovery code to reset the password
+ * @param {String} req.body.email - Required
+ */
 export async function forgotPassword(req, res) {
 	if (!req.body.email) {
 		res.status(400).send({ message: "Missing fields" });

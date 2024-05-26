@@ -1,5 +1,12 @@
 import { insertContactPhone } from "../utils/DBComponent.js";
 
+/**
+ * Create a new phone
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.phoneType - Optional Default 1
+ * @param {Number} req.body.phoneCode - Optional Default 58
+ * @param {Number} req.body.phoneNumber - Required
+ */
 export async function createPhone(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

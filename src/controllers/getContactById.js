@@ -1,5 +1,10 @@
 import { getContactById as getContactByIdDB, getContactPhone, getContactEmail, getContactURL, getContactDate } from "../utils/DBComponent.js";
 
+/**
+ * Get a contact by its id
+ * @param {Number} req.query.id - Required
+ * @returns {Object} - Contact
+ */
 export async function getContactById(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

@@ -1,5 +1,11 @@
 import { updateContactURL as updateContactURLDB } from "../utils/DBComponent.js";
 
+/**
+ * Update a URL from a contact
+ * @param {Number} req.body.contactId - Required
+ * @param {String} req.body.url - Required
+ * @param {Number} req.body.id - Required
+ */
 export async function updateContactURL(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

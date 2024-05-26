@@ -1,5 +1,10 @@
 import { getContactByGroups as getContactByGroupsDB } from "../utils/DBComponent.js";
 
+/**
+ * Get contacts by groups
+ * @param {Number} req.query.id - Required
+ * @returns {Object} - Contacts
+ */
 export async function getContactsByGroups(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

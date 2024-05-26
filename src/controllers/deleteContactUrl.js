@@ -1,5 +1,10 @@
 import { deleteContactURL as deleteContactURLDB } from "../utils/DBComponent.js";
 
+/**
+ * Delete a URL from a contact
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.urlId - Required
+ */
 export const deleteContactUrl = async (req, res) => {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

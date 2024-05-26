@@ -1,5 +1,12 @@
 import { updateContactDate as updateContactDateDB } from "../utils/DBComponent.js";
 
+/**
+ * Update a date from a contact
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.dateType - Optional
+ * @param {String} req.body.date - Required
+ * @param {Number} req.body.id - Required
+ */
 export async function updateContactDate(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

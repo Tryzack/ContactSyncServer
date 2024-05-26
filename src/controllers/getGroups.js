@@ -1,5 +1,9 @@
 import { getGroups as getGroupsDB } from "../utils/DBComponent.js";
 
+/**
+ * Get all groups
+ * @returns {Object} - Groups
+ */
 export async function getGroups(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

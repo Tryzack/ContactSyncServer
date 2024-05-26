@@ -1,5 +1,10 @@
 import { deleteContactPhone as deleteContactPhoneDB } from "../utils/DBComponent.js";
 
+/**
+ * Delete a phone from a contact
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.phoneId - Required
+ */
 export async function deleteContactPhone(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

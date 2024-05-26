@@ -1,5 +1,10 @@
 import { getContactDate as getContactDateDB } from "../utils/DBComponent.js";
 
+/**
+ * Get a contact date by its id
+ * @param {Number} req.query.id - Required
+ * @returns {Object} - Contact date
+ */
 export async function getContactDate(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

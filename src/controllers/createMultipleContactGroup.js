@@ -1,5 +1,10 @@
 import { insertContactGroup, getContactGroup } from "../utils/DBComponent.js";
 
+/**
+ * Create multiple contact group
+ * @param {Array} req.body.contactIds - Required Array of numbers with contact ids
+ * @param {Number} req.body.groupId - Required
+ */
 export async function createMultipleContactGroup(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

@@ -1,5 +1,10 @@
 import { getContactEmail as getContactEmailDB } from "../utils/DBComponent.js";
 
+/**
+ * Get a contact email
+ * @param {Number} req.query.id - Required
+ * @returns {Object} - Contact email
+ */
 export async function getContactEmail(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

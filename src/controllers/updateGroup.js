@@ -1,5 +1,11 @@
 import { updateGroup as updateGroupDB } from "../utils/DBComponent.js";
 
+/**
+ * Update a group
+ * @param {String} req.body.groupName - Required
+ * @param {String} req.body.groupDescription - Optional
+ * @param {Number} req.body.id - Required
+ */
 export async function updateGroup(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

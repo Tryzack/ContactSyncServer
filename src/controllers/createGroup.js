@@ -1,5 +1,10 @@
 import { insertGroup } from "../utils/DBComponent.js";
 
+/**
+ * Create a new group
+ * @param {String} req.body.name - Required
+ * @param {String} req.body.description - Optional
+ */
 export async function createGroup(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

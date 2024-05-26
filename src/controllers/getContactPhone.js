@@ -1,5 +1,10 @@
 import { getContactPhone as getContactPhoneDB } from "../utils/DBComponent.js";
 
+/**
+ * Get a phone from a contact
+ * @param {Number} req.query.id - Required
+ * @returns {Object} - Contact phone
+ */
 export async function getContactPhone(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });

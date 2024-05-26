@@ -1,5 +1,10 @@
 import { insertContactURL } from "../utils/DBComponent.js";
 
+/**
+ * Create a new URL
+ * @param {Number} req.body.contactId - Required
+ * @param {String} req.body.url - Required
+ */
 export async function createURL(req, res) {
 	if (!req.session.userId) {
 		return res.status(401).send({ message: "Unauthorized" });

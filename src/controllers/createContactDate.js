@@ -1,5 +1,12 @@
 import { insertContactDate } from "../utils/DBComponent.js";
 
+/**
+ * Create a new contact date
+ * @param {Number} req.body.contactId - Required
+ * @param {Number} req.body.dateType - Required
+ * @param {String} req.body.date - Required (format: yyyy-mm-dd)
+ */
+
 export async function createContactDate(req, res) {
 	if (!req.session.userId) {
 		return res.status(401).send({ message: "Unauthorized" });

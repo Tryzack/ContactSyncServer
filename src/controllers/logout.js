@@ -1,3 +1,7 @@
+/**
+ *  Deletes the session and logs out the user
+ */
+
 export function logout(req, res) {
 	if (req.session.userId) {
 		req.session.destroy();

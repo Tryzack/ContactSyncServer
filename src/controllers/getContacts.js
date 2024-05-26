@@ -1,5 +1,9 @@
 import { getContacts as getContactsDB } from "../utils/DBComponent.js";
 
+/**
+ * Get all contacts
+ * @returns {Object} - Contacts
+ */
 export async function getContacts(req, res) {
 	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });
