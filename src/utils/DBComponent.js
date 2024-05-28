@@ -321,7 +321,7 @@ async function insertContactGroup(userId, contactId, groupId) {
 /**
  * Insert a new contact
  * @param {number} userId - User id / comes from the session
- * @param {string} firstName - Contact first name (required)
+ * @param {string} firstName - Contact first name
  * @param {string} lastName - Contact last name
  * @param {string} contactAlias - Contact alias
  * @param {string} company - Contact company
@@ -336,7 +336,7 @@ async function insertContact(userId, firstName, lastName, contactAlias, company,
 		await client.query(queries.insert.insertContact, [
 			id.rows[0].max ? id.rows[0].max + 1 : 1,
 			userId,
-			firstName,
+			firstName ? firstName : "",
 			lastName ? lastName : "",
 			contactAlias ? contactAlias : "",
 			company ? company : "",

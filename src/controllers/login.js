@@ -8,7 +8,7 @@ import { getUserByEmail } from "../utils/DBComponent.js";
  */
 export async function login(req, res) {
 	if (req.session.userId) {
-		res.status(400).send({ message: "Already logged in" });
+		res.status(200).send({ message: "Already logged in" });
 		return;
 	}
 	if (!req.body.email || !req.body.password) {

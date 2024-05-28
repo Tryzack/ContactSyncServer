@@ -26,19 +26,19 @@ import {
  * @param {Array} req.body.urls - Optional
  */
 export async function register(req, res) {
-	if (!req.body.email || !req.body.password || !req.body.firstName) {
+	if (!req.body.email || !req.body.password) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
 	if (req.body.password.length < 8) {
-		res.status(400).send({ message: "Password must be at least 8 characters" });
+		res.status(401).send({ message: "Password must be at least 8 characters" });
 		return;
 	}
 
 	try {
 		const existingUser = await getUserByEmail(req.body.email);
 		if (existingUser) {
-			res.status(400).send({ message: "User already exists" });
+			res.status(409).send({ message: "User already exists" });
 			return;
 		}
 
@@ -46,7 +46,7 @@ export async function register(req, res) {
 		const password = await bcrypt.hash(req.body.password, salt);
 		let user_id = await insertUser(req.body.email, password);
 		if (user_id === false) {
-			res.status(400).send({ message: "There was an error" });
+			res.status(500).send({ message: "There was an error" });
 			return;
 		}
 		insertGroup(user_id, "Favorites", "List of favorite contacts");

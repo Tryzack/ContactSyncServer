@@ -31,6 +31,7 @@ export async function deleteUser(req, res) {
 
 		await deleteUserDB(user.id);
 		res.status(200).send({ message: "User deleted" });
+		req.session.destroy();
 	} catch (error) {
 		console.log(error);
 		res.status(500).send({ message: "Error deleting user" });
