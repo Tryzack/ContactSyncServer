@@ -279,7 +279,7 @@ async function insertUser(email, password) {
  * @param {string} groupName - Group name (required)
  * @param {string} groupDescription - Group description
  */
-async function insertGroup(userId, groupName, groupDescription) {
+async function insertGroup(userId, groupName, groupDescription, color) {
 	try {
 		const client = await connect();
 		if (!client) return false;
@@ -289,6 +289,7 @@ async function insertGroup(userId, groupName, groupDescription) {
 			userId,
 			groupName,
 			groupDescription ? groupDescription : "",
+			color ? color : 1,
 		]);
 		client.end();
 		return true;

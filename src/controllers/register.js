@@ -49,8 +49,8 @@ export async function register(req, res) {
 			res.status(500).send({ message: "There was an error" });
 			return;
 		}
-		insertGroup(user_id, "Favorites", "List of favorite contacts");
-		insertGroup(user_id, "Emergency", "List of emergency contacts");
+		insertGroup(user_id, "Favorites", "List of favorite contacts", (color = 1));
+		insertGroup(user_id, "Emergency", "List of emergency contacts", (color = 2));
 		insertContact(user_id, req.body.firstName, req.body.lastName, req.body.alias, req.body.company, req.body.address, req.body.color);
 		if (req.body.phones && req.body.phones.length > 0) {
 			req.body.phones.forEach((phone) => {

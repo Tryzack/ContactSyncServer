@@ -15,7 +15,7 @@ export async function createGroup(req, res) {
 		return;
 	}
 
-	const result = await insertGroup(req.session.userId, req.body.name, req.body.description);
+	const result = await insertGroup(req.session.userId, req.body.name, req.body.description, req.body.color);
 
 	if (result) {
 		res.send({ message: "Group created" });

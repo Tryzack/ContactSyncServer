@@ -27,7 +27,7 @@ const queries = {
 		insertUser: "INSERT INTO users (id, email, user_password) VALUES ($1, $2, $3)",
 		insertContact:
 			"INSERT INTO contact (id, user_id, first_name, last_name, contact_alias, company, address, color) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)",
-		insertGroup: "INSERT INTO group_data (id, user_id, group_name, group_description) VALUES ($1, $2, $3, $4)",
+		insertGroup: "INSERT INTO group_data (id, user_id, group_name, group_description, color) VALUES ($1, $2, $3, $4, $5)",
 		insertContactGroup: "INSERT INTO contact_group (user_id, contact_id, group_id) VALUES ($1, $2, $3)",
 		insertContactPhone:
 			"INSERT INTO contact_phone (id, user_id, contact_id, phone_type, phone_code, phone_number) VALUES ($1, $2, $3, $4, $5 , $6)",
