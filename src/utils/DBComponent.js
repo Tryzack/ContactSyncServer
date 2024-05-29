@@ -292,7 +292,7 @@ async function insertGroup(userId, groupName, groupDescription, color) {
 			color ? color : 1,
 		]);
 		client.end();
-		return true;
+		return { id: id.rows[0].max ? id.rows[0].max + 1 : 1, response: true };
 	} catch (error) {
 		console.error(error);
 		return false;

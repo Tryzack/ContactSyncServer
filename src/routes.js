@@ -8,6 +8,7 @@ import { logout } from "./controllers/logout.js";
 import { forgotPassword } from "./controllers/forgotPassword.js";
 import { recoveryCode } from "./controllers/recoveryCode.js";
 import { recoveryPassword } from "./controllers/recoveryPassword.js";
+import { checkSession } from "./controllers/checkSession.js";
 
 //get controllers
 
@@ -62,6 +63,7 @@ router.get("/logout", logout);
 router.post("/forgotPassword", forgotPassword);
 router.post("/recoveryCode", recoveryCode);
 router.post("/recoveryPassword", recoveryPassword);
+router.get("/checkSession", checkSession);
 
 // get routes
 router.get("/getContacts", getContacts);
