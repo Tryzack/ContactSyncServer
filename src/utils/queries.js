@@ -15,7 +15,7 @@ const queries = {
 		getMaxContactURLId: "SELECT MAX(id) FROM contact_url WHERE contact_id = $1 AND user_id = $2",
 		getContactDate: "SELECT id, date_type, contact_date FROM contact_date WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactDateId: "SELECT MAX(id) FROM contact_date WHERE contact_id = $1 AND user_id = $2",
-		getGroups: "SELECT id, group_name, group_description FROM group_data WHERE user_id = $1",
+		getGroups: "SELECT id, group_name, group_description, color FROM group_data WHERE user_id = $1",
 		getMaxGroupId: "SELECT MAX(id) FROM group_data WHERE user_id = $1",
 		getGroupById: "SELECT * FROM group_data WHERE id = $1 AND user_id = $2",
 		getContactGroups: "SELECT group_id, contact_id FROM contact_group WHERE user_id = $1",
