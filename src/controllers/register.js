@@ -30,6 +30,7 @@ export async function register(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
+
 	if (req.body.password.length < 8) {
 		res.status(401).send({ message: "Password must be at least 8 characters" });
 		return;
@@ -39,6 +40,11 @@ export async function register(req, res) {
 		const existingUser = await getUserByEmail(req.body.email);
 		if (existingUser) {
 			res.status(409).send({ message: "User already exists" });
+			return;
+		}
+		const emailRegex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+		if (!emailRegex.test(req.body.email)) {
+			res.status(400).send({ message: "Invalid email format" });
 			return;
 		}
 
@@ -59,8 +65,7 @@ export async function register(req, res) {
 		}
 		if (req.body.emails && req.body.emails.length > 0) {
 			req.body.emails.forEach((email) => {
-				const regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
-				if (!regex.test(email.direction)) {
+				if (!emailRegex.test(email.direction)) {
 					res.status(400).send({ message: "Invalid email format" });
 					return;
 				}
