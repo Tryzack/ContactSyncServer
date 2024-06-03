@@ -60,6 +60,24 @@ async function getUserByEmail(email) {
 }
 
 /**
+ * Get user by id
+ * @param {number} userId - User id
+ * @returns {Object} - User object
+ */
+async function getUserById(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getUserById, [userId]);
+		client.end();
+		return result.rows[0];
+	} catch (error) {
+		console.error(error);
+		return null;
+	}
+}
+
+/**
  * Get contacts
  * @param {number} userId - User id
  * @returns {Array} - Array of contacts
@@ -777,6 +795,7 @@ getUsers().then((users) => {
 
 export {
 	getUsers,
+	getUserById,
 	getUserByEmail,
 	getContacts,
 	getContactById,

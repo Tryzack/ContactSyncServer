@@ -1,27 +1,26 @@
-import { updateUserPassword as updateUserDB, getUserByEmail } from "../utils/DBComponent.js";
+import { updateUserPassword as updateUserDB, getUserById } from "../utils/DBComponent.js";
 import bcrypt from "bcrypt";
 
 /**
  * Update user password
- * @param {String} req.body.email - Required
  * @param {String} req.body.oldPassword - Required
  * @param {String} req.body.newPassword - Required
  */
 export async function updateUserPassword(req, res) {
-	if (req.session.userId) {
+	if (!req.session.userId) {
 		res.status(401).send({ message: "Unauthorized" });
 		return;
 	}
-	if (!req.body.email || !req.body.oldPassword || !req.body.newPassword) {
+	if (!req.body.oldPassword || !req.body.newPassword) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
 	if (req.body.newPassword === null || req.body.newPassword === "" || req.body.newPassword === undefined || req.body.newPassword.length < 8) {
-		res.status(400).send({ message: "Invalid password" });
+		res.status(402).send({ message: "Invalid password" });
 		return;
 	}
 	try {
-		const user = await getUserByEmail(req.body.email);
+		const user = await getUserById(req.session.userId);
 		if (!user) {
 			res.status(400).send({ message: "User does not exist" });
 			return;
@@ -29,7 +28,7 @@ export async function updateUserPassword(req, res) {
 
 		const validPassword = await bcrypt.compare(req.body.oldPassword, user.user_password);
 		if (!validPassword) {
-			res.status(400).send({ message: "Invalid password" });
+			res.status(403).send({ message: "Invalid password" });
 			return;
 		}
 
