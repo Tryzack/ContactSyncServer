@@ -45,7 +45,7 @@ const queries = {
 		updateContactEmail: "UPDATE contact_email SET email_type = $1, email_direction = $2 WHERE contact_id = $3 AND user_id = $4 AND id = $5",
 		updateContactURL: "UPDATE contact_url SET url = $1 WHERE contact_id = $2 AND user_id = $3 AND id = $4",
 		updateContactDate: "UPDATE contact_date SET date_type = $1, contact_date = $2 WHERE contact_id = $3 AND user_id = $4 AND id = $5",
-		updateGroup: "UPDATE group_data SET group_name = $1, group_description = $2 WHERE user_id = $3 AND id = $4",
+		updateGroup: "UPDATE group_data SET group_name = $1, group_description = $2, color = $3 WHERE user_id = $4 AND id = $5",
 	},
 	delete: {
 		deleteUser: "DELETE FROM users WHERE id = $1",

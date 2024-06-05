@@ -614,12 +614,13 @@ async function updateContactDate(id, userId, contactId, dateType, contactDate) {
  * @param {number} groupId
  * @param {string} groupName
  * @param {string} groupDescription
+ * @param {number} groupColor
  */
-async function updateGroup(userId, groupId, groupName, groupDescription) {
+async function updateGroup(userId, groupId, groupName, groupDescription, groupColor) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.update.updateGroup, [groupName, groupDescription, userId, groupId]);
+		await client.query(queries.update.updateGroup, [groupName, groupDescription, groupColor, userId, groupId]);
 		client.end();
 		return true;
 	} catch (error) {
