@@ -363,7 +363,8 @@ async function insertContact(userId, firstName, lastName, contactAlias, company,
 			color ? color : 1,
 		]);
 		client.end();
-		return true;
+		//return id
+		return id.rows[0].max ? id.rows[0].max + 1 : 1;
 	} catch (error) {
 		console.error(error);
 		return false;
@@ -372,7 +373,6 @@ async function insertContact(userId, firstName, lastName, contactAlias, company,
 
 /**
  * Insert a new phone number for a contact
- * @param {number} id - Phone id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {number} phoneType - Phone type

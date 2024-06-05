@@ -34,6 +34,10 @@ export async function createContact(req, res) {
 			req.body.address,
 			req.body.color
 		);
+		if (!result) {
+			res.status(400).send({ message: "Error creating contact" });
+			return;
+		}
 	} catch (error) {
 		res.status(400).send({ message: "Error creating contact" });
 		return;
@@ -41,7 +45,7 @@ export async function createContact(req, res) {
 	if (req.body.phones && req.body.phones.length > 0) {
 		req.body.phones.forEach((phone) => {
 			try {
-				insertContactPhone(result, 1, phone.type, phone.code, phone.number);
+				insertContactPhone(req.session.userId, result, phone.phoneType, phone.phoneCode, phone.phoneNumber);
 			} catch (error) {
 				console.error(`Error creating phone for user: ${req.session.userId} \n error: ${error}`);
 				return;
@@ -51,7 +55,7 @@ export async function createContact(req, res) {
 	if (req.body.emails && req.body.emails.length > 0) {
 		req.body.emails.forEach((email) => {
 			try {
-				insertContactEmail(result, 1, email.type, email.email);
+				insertContactEmail(req.session.userId, result, email.type, email.email);
 			} catch (error) {
 				console.error(`Error creating email for user: ${req.session.userId} \n error: ${error}`);
 				return;
@@ -61,7 +65,7 @@ export async function createContact(req, res) {
 	if (req.body.dates && req.body.dates.length > 0) {
 		req.body.dates.forEach((date) => {
 			try {
-				insertContactDate(result, 1, date.type, date.date);
+				insertContactDate(req.session.userId, result, date.type, date.date);
 			} catch (error) {
 				console.error(`Error creating date for user: ${req.session.userId} \n error: ${error}`);
 				return;
@@ -71,16 +75,12 @@ export async function createContact(req, res) {
 	if (req.body.urls && req.body.urls.length > 0) {
 		req.body.urls.forEach((url) => {
 			try {
-				insertContactURL(result, 1, url.type, url.url);
+				insertContactURL(req.session.userId, result, url.type, url.url);
 			} catch (error) {
 				console.error(`Error creating url for user: ${req.session.userId} \n error: ${error}`);
 				return;
 			}
 		});
 	}
-	if (result) {
-		res.send({ message: "Contact created" });
-	} else {
-		res.status(400).send({ message: "Error creating contact" });
-	}
+	res.send({ message: "Contact created", contactId: result });
 }
