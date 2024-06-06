@@ -11,7 +11,7 @@ const queries = {
 		getMaxContactPhoneId: "SELECT MAX(id) FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getContactEmail: "SELECT id, email_type, email_direction FROM contact_email WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactEmailId: "SELECT MAX(id) FROM contact_email WHERE contact_id = $1 AND user_id = $2",
-		getContactURL: "SELECT id, url FROM contact_url WHERE contact_id = $1 AND user_id = $2",
+		getContactURL: "SELECT id, url, type FROM contact_url WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactURLId: "SELECT MAX(id) FROM contact_url WHERE contact_id = $1 AND user_id = $2",
 		getContactDate: "SELECT id, date_type, contact_date FROM contact_date WHERE contact_id = $1 AND user_id = $2",
 		getMaxContactDateId: "SELECT MAX(id) FROM contact_date WHERE contact_id = $1 AND user_id = $2",
@@ -32,7 +32,7 @@ const queries = {
 		insertContactPhone:
 			"INSERT INTO contact_phone (id, user_id, contact_id, phone_type, phone_code, phone_number) VALUES ($1, $2, $3, $4, $5 , $6)",
 		insertContactEmail: "INSERT INTO contact_email (id, user_id, contact_id, email_type, email_direction) VALUES ($1, $2, $3, $4, $5)",
-		insertContactURL: "INSERT INTO contact_url (id, user_id, contact_id, url) VALUES ($1, $2, $3, $4)",
+		insertContactURL: "INSERT INTO contact_url (id, user_id, contact_id, url, type) VALUES ($1, $2, $3, $4, $5)",
 		insertContactDate: "INSERT INTO contact_date (id, user_id, contact_id, date_type, contact_date) VALUES ($1, $2, $3, $4, $5)",
 	},
 	update: {
@@ -43,7 +43,7 @@ const queries = {
 		updateContactPhone:
 			"UPDATE contact_phone SET phone_type = $1, phone_code = $2, phone_number = $3 WHERE contact_id = $4 AND user_id = $5 AND id = $6",
 		updateContactEmail: "UPDATE contact_email SET email_type = $1, email_direction = $2 WHERE contact_id = $3 AND user_id = $4 AND id = $5",
-		updateContactURL: "UPDATE contact_url SET url = $1 WHERE contact_id = $2 AND user_id = $3 AND id = $4",
+		updateContactURL: "UPDATE contact_url SET url = $1, type = $2 WHERE contact_id = $3 AND user_id = $4 AND id = $5",
 		updateContactDate: "UPDATE contact_date SET date_type = $1, contact_date = $2 WHERE contact_id = $3 AND user_id = $4 AND id = $5",
 		updateGroup: "UPDATE group_data SET group_name = $1, group_description = $2, color = $3 WHERE user_id = $4 AND id = $5",
 	},

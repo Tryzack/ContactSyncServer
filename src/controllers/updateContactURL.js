@@ -15,7 +15,7 @@ export async function updateContactURL(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
-	const result = await updateContactURLDB(req.body.urlId, req.session.userId, req.body.contactId, req.body.url);
+	const result = await updateContactURLDB(req.body.urlId, req.session.userId, req.body.contactId, req.body.url, req.body.type || 1);
 	if (result) {
 		res.send({ message: "URL updated" });
 	} else {

@@ -450,12 +450,12 @@ async function insertContactDate(userId, contactId, dateType, contactDate) {
  * @param {number} contactId - Contact id
  * @param {string} url - URL
  */
-async function insertContactURL(userId, contactId, url) {
+async function insertContactURL(userId, contactId, url, type) {
 	try {
 		const client = await connect();
 		if (!client) return false;
 		const id = await client.query(queries.select.getMaxContactURLId, [contactId, userId]);
-		await client.query(queries.insert.insertContactURL, [id.rows[0].max + 1 || 1, userId, contactId, url]);
+		await client.query(queries.insert.insertContactURL, [id.rows[0].max + 1 || 1, userId, contactId, url, type]);
 		client.end();
 		return true;
 	} catch (error) {
@@ -575,11 +575,11 @@ async function updateContactEmail(id, userId, contactId, emailType, emailDirecti
  * @param {number} contactId
  * @param {string} url
  */
-async function updateContactURL(id, userId, contactId, url) {
+async function updateContactURL(id, userId, contactId, url, type) {
 	try {
 		const client = await connect();
 		if (!client) return false;
-		await client.query(queries.update.updateContactURL, [url, contactId, userId, id]);
+		await client.query(queries.update.updateContactURL, [url, type, contactId, userId, id]);
 		client.end();
 		return true;
 	} catch (error) {
