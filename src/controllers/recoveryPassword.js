@@ -33,7 +33,7 @@ export async function recoveryPassword(req, res) {
 			res.status(400).send({ message: "Invalid code" });
 			return;
 		}
-		if (newPassword.length < 8) {
+		if (req.body.newPassword.length < 8) {
 			res.status(400).send({ message: "Password must be at least 8 characters" });
 			return;
 		}
@@ -78,6 +78,7 @@ export async function recoveryPassword(req, res) {
 		sendEmail({ email, subject, body, type });
 		res.status(200).send({ message: "Password updated" });
 	} catch (error) {
+		console.error(error);
 		res.status(500).send({ message: "Internal server error" });
 	}
 }
