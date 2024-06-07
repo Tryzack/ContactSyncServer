@@ -133,6 +133,24 @@ async function getContactPhone(userId, contactId) {
 }
 
 /**
+ * Get all contact phones
+ * @param {number} userId - User id
+ * @returns {Array} - Array of phone numbers
+ */
+async function getAllContactPhones(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getAllContactPhones, [userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
  * Get contact emails
  * @param {number} userId - User id
  * @param {number} contactId - Contact id
@@ -148,6 +166,24 @@ async function getContactEmail(userId, contactId) {
 	} catch (error) {
 		console.error(error);
 		return [];
+	}
+}
+
+/**
+ * Get all contact emails
+ * @param {number} userId - User id
+ * @returns {Array} - Array of emails
+ */
+async function getAllContactEmails(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getAllContactEmails, [userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return false;
 	}
 }
 
@@ -171,6 +207,24 @@ async function getContactURL(userId, contactId) {
 }
 
 /**
+ * Get all contact URLs
+ * @param {number} userId - User id
+ * @returns {Array} - Array of URLs
+ */
+async function getAllContactURLs(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getAllContactURLs, [userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
  * Get contact dates
  * @param {number} userId - User id
  * @param {number} contactId - Contact id
@@ -186,6 +240,24 @@ async function getContactDate(userId, contactId) {
 	} catch (error) {
 		console.error(error);
 		return [];
+	}
+}
+
+/**
+ * Get all contact dates
+ * @param {number} userId - User id
+ * @returns {Array} - Array of dates
+ */
+async function getAllContactDates(userId) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.getAllContactDates, [userId]);
+		client.end();
+		return result.rows;
+	} catch (error) {
+		console.error(error);
+		return false;
 	}
 }
 
@@ -396,7 +468,6 @@ async function insertContactPhone(userId, contactId, phoneType, phoneCode, phone
 
 /**
  * Insert a new email for a contact
- * @param {number} id - Email id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {number} emailType - Email type
@@ -424,7 +495,6 @@ async function insertContactEmail(userId, contactId, emailType, emailDirection) 
 
 /**
  * Insert a new date for a contact
- * @param {number} id - Date id
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {number} dateType - Date type
@@ -449,6 +519,7 @@ async function insertContactDate(userId, contactId, dateType, contactDate) {
  * @param {number} userId - User id / comes from the session
  * @param {number} contactId - Contact id
  * @param {string} url - URL
+ * @param {number} type - URL type
  */
 async function insertContactURL(userId, contactId, url, type) {
 	try {
@@ -574,6 +645,7 @@ async function updateContactEmail(id, userId, contactId, emailType, emailDirecti
  * @param {number} userId
  * @param {number} contactId
  * @param {string} url
+ * @param {number} type
  */
 async function updateContactURL(id, userId, contactId, url, type) {
 	try {
@@ -801,9 +873,13 @@ export {
 	getContacts,
 	getContactById,
 	getContactPhone,
+	getAllContactPhones,
 	getContactEmail,
+	getAllContactEmails,
 	getContactURL,
+	getAllContactURLs,
 	getContactDate,
+	getAllContactDates,
 	getGroups,
 	getContactByGroups,
 	getContactGroup,
