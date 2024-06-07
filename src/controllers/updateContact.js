@@ -83,7 +83,7 @@ export async function updateContact(req, res) {
 			}
 		}
 		for (let i = 0; i < req.body.emails.length; i++) {
-			await updateContactEmail(i + 1, req.session.userId, req.body.contactId, req.body.emails[i].emailType, req.body.emails[i].emailDirection);
+			await updateContactEmail(i + 1, req.session.userId, req.body.contactId, req.body.emails[i].type, req.body.emails[i].email);
 		}
 	}
 	if (req.body.urls) {
@@ -113,7 +113,7 @@ export async function updateContact(req, res) {
 			}
 		}
 		for (let i = 0; i < req.body.dates.length; i++) {
-			await updateContactDate(i + 1, req.session.userId, req.body.contactId, req.body.dates[i].dateType, req.body.dates[i].contactDate);
+			await updateContactDate(i + 1, req.session.userId, req.body.contactId, req.body.dates[i].type, req.body.dates[i].date);
 		}
 	}
 
