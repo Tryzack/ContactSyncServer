@@ -8,7 +8,8 @@ const queries = {
 		getMaxContactId: "SELECT MAX(id) FROM contact WHERE user_id = $1",
 		getContactById: "SELECT id, first_name, last_name, contact_alias, company, address, color FROM contact WHERE id = $1 AND user_id = $2",
 		getContactPhone: " SELECT id, phone_type, phone_code, phone_number FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
-		findContactPhoneByCodeAndNumber: "SELECT * FROM contact_phone WHERE user_id = $1 AND phone_code = $2 AND phone_number = $3",
+		findContactPhoneByCodeAndNumber:
+			"SELECT * FROM contact_phone WHERE user_id = $1 AND phone_number = $2 AND phone_code = $3 AND contact_id != $4",
 		getAllContactPhones: "SELECT id, phone_type, phone_code, phone_number FROM contact_phone WHERE user_id = $1",
 		getMaxContactPhoneId: "SELECT MAX(id) FROM contact_phone WHERE contact_id = $1 AND user_id = $2",
 		getContactEmail: "SELECT id, email_type, email_direction FROM contact_email WHERE contact_id = $1 AND user_id = $2",

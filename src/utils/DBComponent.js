@@ -120,11 +120,11 @@ async function getContactById(userId, contactId) {
  * @param {number} phoneNumber - Phone number
  * @returns {Boolean} - true if the phone number exists and false if it doesn't
  */
-async function findContactPhoneByCodeAndNumber(userId, phoneCode, phoneNumber) {
+async function findContactPhoneByCodeAndNumber(userId, phoneCode, phoneNumber, contactId) {
 	try {
 		const client = await connect();
 		if (!client) return null;
-		const result = await client.query(queries.select.findContactPhoneByCodeAndNumber, [userId, phoneCode, phoneNumber]);
+		const result = await client.query(queries.select.findContactPhoneByCodeAndNumber, [userId, phoneNumber, phoneCode, contactId]);
 		client.end();
 		return result.rows.length > 0;
 	} catch (error) {
