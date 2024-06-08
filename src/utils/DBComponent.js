@@ -114,6 +114,26 @@ async function getContactById(userId, contactId) {
 }
 
 /**
+ * Find contact phone by code and number
+ * @param {number} userId - User id
+ * @param {number} phoneCode - Country code
+ * @param {number} phoneNumber - Phone number
+ * @returns {Boolean} - true if the phone number exists and false if it doesn't
+ */
+async function findContactPhoneByCodeAndNumber(userId, phoneCode, phoneNumber) {
+	try {
+		const client = await connect();
+		if (!client) return null;
+		const result = await client.query(queries.select.findContactPhoneByCodeAndNumber, [userId, phoneCode, phoneNumber]);
+		client.end();
+		return result.rows.length > 0;
+	} catch (error) {
+		console.error(error);
+		return false;
+	}
+}
+
+/**
  * Get contact phone numbers
  * @param {number} userId - User id
  * @param {number} contactId - Contact id
@@ -876,6 +896,7 @@ export {
 	getAllContactPhones,
 	getContactEmail,
 	getAllContactEmails,
+	findContactPhoneByCodeAndNumber,
 	getContactURL,
 	getAllContactURLs,
 	getContactDate,

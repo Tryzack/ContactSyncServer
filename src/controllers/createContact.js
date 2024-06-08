@@ -1,4 +1,11 @@
-import { insertContact, insertContactPhone, insertContactDate, insertContactEmail, insertContactURL } from "../utils/DBComponent.js";
+import {
+	insertContact,
+	insertContactPhone,
+	insertContactDate,
+	insertContactEmail,
+	insertContactURL,
+	findContactPhoneByCodeAndNumber,
+} from "../utils/DBComponent.js";
 
 /**
  * Create a new contact
@@ -23,6 +30,15 @@ export async function createContact(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
+
+	req.body.phones.forEach((phone) => {
+		const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber);
+		if (phoneExists) {
+			res.status(450).send({ message: "Phone number already exists" });
+			return;
+		}
+	});
+
 	let result;
 	try {
 		result = await insertContact(

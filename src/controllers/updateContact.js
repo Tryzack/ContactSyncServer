@@ -16,6 +16,7 @@ import {
 	updateContactPhone,
 	updateContactURL,
 	updateContactDate,
+	findContactPhoneByCodeAndNumber,
 } from "../utils/DBComponent.js";
 
 /**
@@ -36,6 +37,15 @@ export async function updateContact(req, res) {
 	if (!req.body.contactId) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
+	}
+	if (req.body.phones) {
+		req.body.phones.forEach((phone) => {
+			const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber);
+			if (phoneExists) {
+				res.status(450).send({ message: "Phone number already exists" });
+				return;
+			}
+		});
 	}
 
 	const result = await DBUpdate(
