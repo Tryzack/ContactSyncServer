@@ -13,9 +13,13 @@ export async function createURL(req, res) {
 	if (!req.body.contactId || !req.body.url) {
 		return res.status(400).send({ message: "Missing data" });
 	}
-	const result = await insertContactURL(req.session.userId, req.body.contactId, req.body.url, req.body.type || 1);
-	if (!result) {
+	try {
+		const result = await insertContactURL(req.session.userId, req.body.contactId, req.body.url, req.body.type || 1);
+		if (!result) {
+			return res.status(500).send({ message: "Error creating URL" });
+		}
+		return res.status(201).send({ message: "URL created" });
+	} catch (error) {
 		return res.status(500).send({ message: "Error creating URL" });
 	}
-	return res.status(201).send({ message: "URL created" });
 }

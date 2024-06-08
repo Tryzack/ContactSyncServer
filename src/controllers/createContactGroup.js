@@ -16,18 +16,26 @@ export async function createContactGroup(req, res) {
 		return;
 	}
 
-	// check if contact is already in group
-	const contactGroup = await getContactGroup(req.session.userId, req.body.contactId, req.body.groupId);
-	if (contactGroup && contactGroup.length > 0) {
-		res.status(400).send({ message: "Contact is already in group" });
+	try {
+		const contactGroup = await getContactGroup(req.session.userId, req.body.contactId, req.body.groupId);
+		if (contactGroup && contactGroup.length > 0) {
+			res.status(400).send({ message: "Contact is already in group" });
+			return;
+		}
+	} catch (error) {
+		res.status(400).send({ message: "Error adding contact to group" });
 		return;
 	}
 
-	const result = await insertContactGroup(req.session.userId, req.body.contactId, req.body.groupId);
+	try {
+		const result = await insertContactGroup(req.session.userId, req.body.contactId, req.body.groupId);
 
-	if (result) {
-		res.send({ message: "Contact added to group" });
-	} else {
+		if (result) {
+			res.send({ message: "Contact added to group" });
+		} else {
+			res.status(400).send({ message: "Error adding contact to group" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error adding contact to group" });
 	}
 }

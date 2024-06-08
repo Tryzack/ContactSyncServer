@@ -34,9 +34,14 @@ export async function createContact(req, res) {
 	if (req.body.phones) {
 		for (let i = 0; i < req.body.phones.length; i++) {
 			const phone = req.body.phones[i];
-			const phoneExists = await findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber, 0);
-			if (phoneExists) {
-				res.status(450).send({ message: "Phone number already exists" });
+			try {
+				const phoneExists = await findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber, 0);
+				if (phoneExists) {
+					res.status(450).send({ message: "Phone number already exists" });
+					return;
+				}
+			} catch (error) {
+				console.error(`Error finding phone for user: ${req.session.userId} \n error: ${error}`);
 				return;
 			}
 		}

@@ -14,9 +14,13 @@ export async function createEmail(req, res) {
 	if (!contactId || !emailDirection) {
 		return res.status(400).send({ message: "Missing data" });
 	}
-	const result = await insertContactEmail(req.session.userId, contactId, emailType ? emailType : 1, emailDirection);
-	if (!result) {
+	try {
+		const result = await insertContactEmail(req.session.userId, contactId, emailType ? emailType : 1, emailDirection);
+		if (!result) {
+			return res.status(500).send({ message: "Error creating email" });
+		}
+		return res.status(201).send({ message: "Email created" });
+	} catch (error) {
 		return res.status(500).send({ message: "Error creating email" });
 	}
-	return res.status(201).send({ message: "Email created" });
 }

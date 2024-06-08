@@ -19,10 +19,20 @@ export async function updateGroup(req, res) {
 		res.status(400).send({ message: "Favorite and Emergency groups cannot be modified" });
 		return;
 	}
-	const result = await updateGroupDB(req.session.userId, req.body.id, req.body.groupName, req.body.groupDescription || "", req.body.color || "");
-	if (result) {
-		res.send({ message: "Group updated" });
-	} else {
+	try {
+		const result = await updateGroupDB(
+			req.session.userId,
+			req.body.id,
+			req.body.groupName,
+			req.body.groupDescription || "",
+			req.body.color || ""
+		);
+		if (result) {
+			res.send({ message: "Group updated" });
+		} else {
+			res.status(400).send({ message: "Error updating group" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error updating group" });
 	}
 }

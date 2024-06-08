@@ -16,11 +16,15 @@ export async function createGroup(req, res) {
 		return;
 	}
 
-	const result = await insertGroup(req.session.userId, req.body.name, req.body.description, req.body.color);
+	try {
+		const result = await insertGroup(req.session.userId, req.body.name, req.body.description, req.body.color);
 
-	if (result.response) {
-		res.send({ message: "Group created", group_id: result.id });
-	} else {
+		if (result.response) {
+			res.send({ message: "Group created", group_id: result.id });
+		} else {
+			res.status(400).send({ message: "Error creating group" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error creating group" });
 	}
 }

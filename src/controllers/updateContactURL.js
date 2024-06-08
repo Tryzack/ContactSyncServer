@@ -15,10 +15,14 @@ export async function updateContactURL(req, res) {
 		res.status(400).send({ message: "Missing fields" });
 		return;
 	}
-	const result = await updateContactURLDB(req.body.urlId, req.session.userId, req.body.contactId, req.body.url, req.body.type || 1);
-	if (result) {
-		res.send({ message: "URL updated" });
-	} else {
+	try {
+		const result = await updateContactURLDB(req.body.urlId, req.session.userId, req.body.contactId, req.body.url, req.body.type || 1);
+		if (result) {
+			res.send({ message: "URL updated" });
+		} else {
+			res.status(400).send({ message: "Error updating URL" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error updating URL" });
 	}
 }

@@ -18,18 +18,22 @@ export async function updateContactPhone(req, res) {
 		return;
 	}
 
-	const result = await updateContactPhoneDB(
-		req.body.id,
-		req.session.userId,
-		req.body.contactId,
-		req.body.phoneType || 1,
-		req.body.phoneCode || 58,
-		req.body.phoneNumber
-	);
+	try {
+		const result = await updateContactPhoneDB(
+			req.body.id,
+			req.session.userId,
+			req.body.contactId,
+			req.body.phoneType || 1,
+			req.body.phoneCode || 58,
+			req.body.phoneNumber
+		);
 
-	if (result) {
-		res.send({ message: "Phone updated" });
-	} else {
+		if (result) {
+			res.send({ message: "Phone updated" });
+		} else {
+			res.status(400).send({ message: "Error updating phone" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error updating phone" });
 	}
 }

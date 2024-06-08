@@ -21,10 +21,14 @@ export async function updateContactDate(req, res) {
 		res.status(400).send({ message: "Invalid date format" });
 		return;
 	}
-	const result = await updateContactDateDB(req.body.id, req.session.userId, req.body.contactId, req.body.dateType || 1, req.body.date);
-	if (result) {
-		res.send({ message: "Date updated" });
-	} else {
+	try {
+		const result = await updateContactDateDB(req.body.id, req.session.userId, req.body.contactId, req.body.dateType || 1, req.body.date);
+		if (result) {
+			res.send({ message: "Date updated" });
+		} else {
+			res.status(400).send({ message: "Error updating date" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error updating date" });
 	}
 }

@@ -20,9 +20,13 @@ export async function createContactDate(req, res) {
 	if (!regex.test(date)) {
 		return res.status(400).send({ message: "Invalid date format" });
 	}
-	const result = await insertContactDate(req.session.userId, contactId, dateType, date);
-	if (!result) {
+	try {
+		const result = await insertContactDate(req.session.userId, contactId, dateType, date);
+		if (!result) {
+			return res.status(500).send({ message: "Error creating date" });
+		}
+		return res.status(201).send({ message: "Date created" });
+	} catch (error) {
 		return res.status(500).send({ message: "Error creating date" });
 	}
-	return res.status(201).send({ message: "Date created" });
 }

@@ -17,16 +17,20 @@ export async function createPhone(req, res) {
 		return;
 	}
 
-	let result = await insertContactPhone(
-		req.session.userId,
-		req.body.contactId,
-		req.body.phoneType ? req.body.phoneType : 1,
-		req.body.phoneCode ? req.body.phoneCode : 58,
-		req.body.phoneNumber
-	);
-	if (result) {
-		res.send({ message: "Phone created" });
-	} else {
+	try {
+		let result = await insertContactPhone(
+			req.session.userId,
+			req.body.contactId,
+			req.body.phoneType ? req.body.phoneType : 1,
+			req.body.phoneCode ? req.body.phoneCode : 58,
+			req.body.phoneNumber
+		);
+		if (result) {
+			res.send({ message: "Phone created" });
+		} else {
+			res.status(500).send({ message: "Error creating phone" });
+		}
+	} catch (error) {
 		res.status(500).send({ message: "Error creating phone" });
 	}
 }

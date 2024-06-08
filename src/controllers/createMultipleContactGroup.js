@@ -20,9 +20,14 @@ export async function createMultipleContactGroup(req, res) {
 	let contactsAlreadyInGroup = [];
 
 	for (const contactId of contactIds) {
-		const contactGroup = await getContactGroup(req.session.userId, contactId, groupId);
-		if (contactGroup && contactGroup.length > 0) {
-			contactsAlreadyInGroup.push(contactId);
+		try {
+			const contactGroup = await getContactGroup(req.session.userId, contactId, groupId);
+			if (contactGroup && contactGroup.length > 0) {
+				contactsAlreadyInGroup.push(contactId);
+			}
+		} catch (error) {
+			res.status(400).send({ message: "Error adding contacts to group" });
+			return;
 		}
 	}
 
@@ -30,9 +35,14 @@ export async function createMultipleContactGroup(req, res) {
 		if (contactsAlreadyInGroup.includes(contactId)) {
 			continue;
 		}
-		const result = await insertContactGroup(req.session.userId, contactId, groupId);
+		try {
+			const result = await insertContactGroup(req.session.userId, contactId, groupId);
 
-		if (!result) {
+			if (!result) {
+				res.status(400).send({ message: "Error adding contacts to group" });
+				return;
+			}
+		} catch (error) {
 			res.status(400).send({ message: "Error adding contacts to group" });
 			return;
 		}

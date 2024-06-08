@@ -17,11 +17,21 @@ export async function updateContactEmail(req, res) {
 		return;
 	}
 
-	const result = await updateContactEmailDB(req.body.id, req.session.userId, req.body.contactId, req.body.emailType || 1, req.body.emailDirection);
+	try {
+		const result = await updateContactEmailDB(
+			req.body.id,
+			req.session.userId,
+			req.body.contactId,
+			req.body.emailType || 1,
+			req.body.emailDirection
+		);
 
-	if (result) {
-		res.send({ message: "Email updated" });
-	} else {
+		if (result) {
+			res.send({ message: "Email updated" });
+		} else {
+			res.status(400).send({ message: "Error updating email" });
+		}
+	} catch (error) {
 		res.status(400).send({ message: "Error updating email" });
 	}
 }
