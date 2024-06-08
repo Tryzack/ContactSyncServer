@@ -31,13 +31,16 @@ export async function createContact(req, res) {
 		return;
 	}
 
-	req.body.phones.forEach((phone) => {
-		const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber);
-		if (phoneExists) {
-			res.status(450).send({ message: "Phone number already exists" });
-			return;
+	if (req.body.phones) {
+		for (let i = 0; i < req.body.phones.length; i++) {
+			const phone = req.body.phones[i];
+			const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber);
+			if (phoneExists) {
+				res.status(450).send({ message: "Phone number already exists" });
+				return;
+			}
 		}
-	});
+	}
 
 	let result;
 	try {

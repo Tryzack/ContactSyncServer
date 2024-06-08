@@ -39,13 +39,14 @@ export async function updateContact(req, res) {
 		return;
 	}
 	if (req.body.phones) {
-		req.body.phones.forEach((phone) => {
+		for (let i = 0; i < req.body.phones.length; i++) {
+			const phone = req.body.phones[i];
 			const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber);
 			if (phoneExists) {
 				res.status(450).send({ message: "Phone number already exists" });
 				return;
 			}
-		});
+		}
 	}
 
 	const result = await DBUpdate(
