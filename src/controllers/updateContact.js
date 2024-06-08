@@ -41,7 +41,7 @@ export async function updateContact(req, res) {
 	if (req.body.phones) {
 		for (let i = 0; i < req.body.phones.length; i++) {
 			const phone = req.body.phones[i];
-			const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber);
+			const phoneExists = findContactPhoneByCodeAndNumber(req.session.userId, phone.phoneCode, phone.phoneNumber, req.body.contactId);
 			if (phoneExists) {
 				res.status(450).send({ message: "Phone number already exists" });
 				return;
